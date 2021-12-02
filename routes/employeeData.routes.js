@@ -11,12 +11,20 @@ router
 		allqueryresults(EmployeeData),
 		employeeDataController.getAllEmployeeData,
 	)
-	.post(employeeDataController.createEmployeeData);
+	.post(
+		employeeDataController.uploadEmployeePhoto,
+		employeeDataController.resizeEmployeePhoto,
+		employeeDataController.createEmployeeData,
+	);
 
 router
 	.route('/:id')
 	.get(employeeDataController.getEmployeeData)
-	.put(employeeDataController.updateemployeeData)
+	.put(
+		employeeDataController.uploadEmployeePhoto,
+		employeeDataController.resizeEmployeePhoto,
+		employeeDataController.updateemployeeData,
+	)
 	.delete(employeeDataController.deleteemployeeData);
 
 module.exports = router;
