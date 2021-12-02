@@ -21,4 +21,7 @@ app.use(morgan('dev'));
 // Body parser
 app.use(express.json());
 
+const EmployeeDataRouter = require('./routes/employeeData.routes');
+app.use('/api/v1/employeedata', EmployeeDataRouter);
+
 module.exports = app;
