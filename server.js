@@ -1,15 +1,7 @@
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config('./env');
+const PORT = process.env.PORT;
 const app = require('./app');
-
-process.on('uncaughtException', (err) => {
-    console.log('UNCAUGHT EXCEPTION ! Shutting Down....');
-    console.log(err);
-    process.exit(1);
-});
-
-const port = process.env.PORT || 5000;
-
-const server = app.listen(port, () => {
-    console.log(`Server running at PORT : ${port}`);
+app.listen(PORT, (err) => {
+	if (err) return console.log(err);
+	console.log(`Server Running in ${process.env.NODE_ENV} mode  at ${PORT}...`);
 });

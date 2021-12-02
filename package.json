@@ -1,17 +1,17 @@
 {
   "name": "hamroteam",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend of the HamroTeam",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon  server.js"
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johndoeesq/HamroTeam.git"
   },
-  "author": "",
+  "author": "Sanu Koirala, Nirajan KC",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/johndoeesq/HamroTeam/issues"
@@ -21,6 +21,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^6.0.14",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
   }
 }
