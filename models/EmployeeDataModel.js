@@ -3,29 +3,29 @@ const EmployeeDataSchema = new mongoose.Schema(
 	{
 		employee_name: {
 			type: String,
-			require: [true, 'The employee must have a name'],
+			require: [true, 'An employee must have a name'],
 		},
 		DOB: {
 			type: String,
-			required: [true, 'The employee must have a date of birth'],
+			required: [true, 'An employee must have a date of birth'],
 		},
 		address: {
 			type: String,
-			required: [true, 'The employee must have an address'],
+			required: [true, 'An employee must have an address'],
 		},
 		phone: {
 			type: Number,
-			required: [true, 'The employee must have a phone number'],
+			required: [true, 'An employee must have a phone number'],
 			unique: true,
 		},
 		email: {
 			type: String,
-			required: [true, 'The employee must have an email address'],
+			required: [true, 'An employee must have an email address'],
 			unique: true,
 		},
 		blood_group: {
 			type: String,
-			enum: ['A+,B+,O+,AB+,A-,O-,B-,AB-'],
+			enum: ['A+', 'B+', 'O+', 'AB+', 'A-', 'O-', 'B-', 'AB-'],
 		},
 		gender: {
 			type: String,
