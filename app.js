@@ -27,19 +27,17 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 const EmployeeDataRouter = require('./routes/employeeData.routes');
-<<<<<<< HEAD
 const PayrollRouter = require('./routes/payroll.routes');
 const BenefitsRouter = require('./routes/benefits.routes');
 const EmergencyContactRouter = require('./routes/emergencyContact.routes');
+const EmployeesRouter = require('./routes/employees.routes');
 
 app.use('/api/v1/employeedata', EmployeeDataRouter);
 app.use('/api/v1/payroll', PayrollRouter);
 app.use('/api/v1/benefits', BenefitsRouter);
 app.use('/api/v1/emergencycontact', EmergencyContactRouter);
 
-=======
-const EmployeesRouter = require('./routes/employees.routes');
 app.use('/api/v1/employeedata', EmployeeDataRouter);
 app.use('/api/v1/employees', EmployeesRouter);
->>>>>>> ea1790e39602a2b5eeef76ca17d4f8c5beef7e3a
+
 module.exports = app;
