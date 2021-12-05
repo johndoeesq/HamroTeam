@@ -2,18 +2,40 @@ const express = require('express');
 const benefitsController = require('../controllers/benefitsController');
 const allqueryresults = require('../middleware/allqueryresults');
 const Benefits = require('../models/BenefitsModel');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
 router
 	.route('/')
-	.get(allqueryresults(Benefits), benefitsController.getAllBenefits)
-	.post(benefitsController.createBenefits);
+	.get(
+		allqueryresults(Benefits),
+		authController.protect,
+		authController.restrictTo('admin'),
+		benefitsController.getAllBenefits,
+	)
+	.post(
+		authController.protect,
+		authController.restrictTo('admin'),
+		benefitsController.createBenefits,
+	);
 
 router
 	.route('/:id')
-	.get(benefitsController.getBenefits)
-	.put(benefitsController.updateBenefits)
-	.delete(benefitsController.deleteBenefits);
+	.get(
+		authController.protect,
+		authController.restrictTo('admin', 'employee'),
+		benefitsController.getBenefits,
+	)
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		benefitsController.updateBenefits,
+	)
+	.delete(
+		authController.protect,
+		authController.restrictTo('admin'),
+		benefitsController.deleteBenefits,
+	);
 
 module.exports = router;

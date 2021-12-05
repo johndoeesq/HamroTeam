@@ -34,6 +34,7 @@ const EmergencyContactRouter = require('./routes/emergencyContact.routes');
 const LeaveManagementRouter = require('./routes/leaveManagement.routes');
 const ProjectsRouter = require('./routes/projects.routes');
 const TicketRouter = require('./routes/ticket.routes');
+const AuthRouter = require('./routes/auth.routes');
 
 app.use('/api/v1/employees', EmployeesRouter);
 app.use('/api/v1/employeedata', EmployeeDataRouter);
@@ -43,5 +44,6 @@ app.use('/api/v1/emergencycontact', EmergencyContactRouter);
 app.use('/api/v1/leaves', LeaveManagementRouter);
 app.use('/api/v1/projects', ProjectsRouter);
 app.use('/api/v1/tickets', TicketRouter);
+app.use('/api/v1/auth', AuthRouter);
 
 module.exports = app;
