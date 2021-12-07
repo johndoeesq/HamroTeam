@@ -69,9 +69,9 @@ exports.login = catchAsync(async (req, res, next) => {
 	// }
 
 	// 3) If everything ok, send token to client
-	if (employee.isVerified === false) {
-		return next(new AppError('Account not verified', 403));
-	}
+	// if (employee.isVerified === false) {
+	// 	return next(new AppError('Account not verified', 403));
+	// }
 	createSendToken(employee, 200, req, res);
 });
 
@@ -95,7 +95,6 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
 	// }
 
 	const { email, password } = req.body;
-	console.log(req.body);
 
 	// 1) Check if email and password exist
 	if (!email || !password) {

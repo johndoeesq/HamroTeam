@@ -4,6 +4,7 @@ const allqueryresults = require('../middleware/allqueryresults');
 const router = express.Router();
 const Employee = require('../models/EmployeesModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 
 router
 	.route('/')
@@ -24,6 +25,7 @@ router
 	.get(
 		authController.protect,
 		authController.restrictToBoth('admin', 'employee'),
+		checkEmployeeAccess(Employee),
 		employeesController.getEmployee,
 	)
 	.put(

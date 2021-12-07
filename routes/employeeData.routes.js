@@ -3,6 +3,7 @@ const employeeDataController = require('../controllers/employeeDataController');
 const allqueryresults = require('../middleware/allqueryresults');
 const EmployeeData = require('../models/EmployeeDataModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ router
 	.get(
 		authController.protect,
 		authController.restrictToBoth('admin', 'employee'),
+		checkEmployeeAccess(EmployeeData),
 		employeeDataController.getEmployeeData,
 	)
 	.put(

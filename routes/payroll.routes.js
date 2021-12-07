@@ -3,6 +3,7 @@ const payrollController = require('../controllers/payrollController');
 const allqueryresults = require('../middleware/allqueryresults');
 const Payroll = require('../models/PayrollModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 const router = express.Router();
 
 router
@@ -24,6 +25,7 @@ router
 	.get(
 		authController.protect,
 		authController.restrictToBoth('admin', 'employee'),
+		checkEmployeeAccess(Payroll),
 		payrollController.getPayroll,
 	)
 	.put(
