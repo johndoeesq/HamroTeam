@@ -1,7 +1,7 @@
 const express = require('express');
-const leaveManagementController = require('../controllers/leaveManagementController');
+const ticketController = require('../controllers/ticketController');
 const allqueryresults = require('../middleware/allqueryresults');
-const LeaveManagement = require('../models/LeaveManagementModel');
+const Ticket = require('../models/TicketModel');
 const authController = require('../controllers/authController');
 
 const router = express.Router();
@@ -9,15 +9,15 @@ const router = express.Router();
 router
 	.route('/')
 	.get(
-		allqueryresults(LeaveManagement),
+		allqueryresults(Ticket),
 		authController.protect,
 		authController.restrictTo('admin'),
-		leaveManagementController.getAllLeaves,
+		ticketController.getAllTicket,
 	)
 	.post(
 		authController.protect,
-		authController.restrictTo('admin'),
-		leaveManagementController.createLeaves,
+		authController.restrictTo('employee'),
+		ticketController.createTicket,
 	);
 
 router
@@ -25,17 +25,17 @@ router
 	.get(
 		authController.protect,
 		authController.restrictTo('admin', 'employee'),
-		leaveManagementController.getLeaves,
+		ticketController.getTicket,
 	)
 	.put(
 		authController.protect,
-		authController.restrictTo('admin'),
-		leaveManagementController.updateLeaves,
+		authController.restrictTo('admin', 'employee'),
+		ticketController.updateTicket,
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo('admin'),
-		leaveManagementController.deleteLeaves,
+		authController.restrictTo('admin', 'employee'),
+		ticketController.deleteTicket,
 	);
 
 module.exports = router;
