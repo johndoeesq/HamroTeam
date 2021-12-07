@@ -3,6 +3,7 @@ const documentsController = require("../controllers/documentsController");
 //const authController = require("../controllers/authController");
 const allqueryresults = require('../middleware/allqueryresults');
 const Documents= require('../models/DocumentsModel');
+const authController=require('../controllers/authController')
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router
 router
 	.route('/:id')
 	.get(authController.protect,
-        authController.restrictTo("admin","employee"),
+        
 		documentsController.getDocuments)
 	.put(authController.protect,
         authController.restrictTo("admin"),

@@ -26,7 +26,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		
 		employeeDataController.getEmployeeData,
 	)
 	.put(
