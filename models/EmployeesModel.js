@@ -54,12 +54,13 @@ const EmployeesSchema = new mongoose.Schema(
 		},
 		role: {
 			type: String,
-			enum: ['admin', 'project_manager', 'employee'],
+			enum: ['admin', 'employee'],
 			required: [true, 'Role must be assigned'],
 		},
 		employee_data: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmployeeData',
+      unique:true,
 			required: [true, 'Employee must have data'],
 		},
 		payroll: {
@@ -70,12 +71,14 @@ const EmployeesSchema = new mongoose.Schema(
 		emergency_contact: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmergencyContact',
+      unique:true,
 			required: [true, 'Employee must have emergency contacts'],
 		},
     documents: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Documents',
-			required: [true, 'Employee must have their documents'],
+      unique:true,
+			required: [true, 'Employee must have their'],
 		},
 		passwordChangedAt: Date,
 		passwordResetToken: Date,

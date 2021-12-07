@@ -28,14 +28,14 @@ exports.uploadEmployeePhoto = upload.single('photo');
 
 exports.resizeEmployeePhoto = catchAsync(async (req, res, next) => {
 	if (!req.file) return next();
-
+   
 	req.file.filename = `employee-${Date.now()}.jpeg`;
 
 	await sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat('jpeg')
 		.jpeg({ quality: 90 })
-		.toFile(`public/img/employee/${req.file.filename}`);
+		.toFile(`public/employee/${req.file.filename}`);
 
 	req.body.photo = `${req.protocol}://${req.get('host')}/img/employee/${
 		req.file.filename

@@ -23,7 +23,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin', 'employee','project_manager'),
+		authController.restrictToBoth('admin', 'employee'),
 		emergencyContactController.getEmergencyContact,
 	)
 	.put(

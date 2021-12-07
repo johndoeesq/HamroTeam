@@ -23,7 +23,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		
+		authController.restrictToBoth('admin', 'employee'),
 		payrollController.getPayroll,
 	)
 	.put(

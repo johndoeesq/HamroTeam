@@ -34,7 +34,7 @@ router
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictTo('admin', 'employee'),
 		leaveManagementController.deleteLeaves,
 	);
 
