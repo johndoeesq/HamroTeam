@@ -11,7 +11,7 @@ router
 	.get(
 		allqueryresults(Benefits),
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictToBoth('admin', 'employee'),
 		benefitsController.getAllBenefits,
 	)
 	.post(

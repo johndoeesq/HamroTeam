@@ -24,17 +24,17 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictToBoth('admin', 'employee'),
 		ticketController.getTicket,
 	)
 	.put(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictToBoth('admin', 'employee'),
 		ticketController.updateTicket,
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictToBoth('admin', 'employee'),
 		ticketController.deleteTicket,
 	);
 

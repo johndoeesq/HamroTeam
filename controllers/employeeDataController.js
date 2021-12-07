@@ -28,7 +28,7 @@ exports.uploadEmployeePhoto = upload.single('photo');
 
 exports.resizeEmployeePhoto = catchAsync(async (req, res, next) => {
 	if (!req.file) return next();
-
+   
 	req.file.filename = `employee-${Date.now()}.jpeg`;
 
 	await sharp(req.file.buffer)
