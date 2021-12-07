@@ -55,6 +55,12 @@ const EmployeesSchema = new mongoose.Schema(
           ref: "EmergencyContact",
           required: [true, "Employee must have emergency contacts"],
       },
+      documents:{
+        type: mongoose.Schema.Types.ObjectId,
+          ref: "Documents",
+          required: [true, "Employee must have their documents"],
+      },
+
     },
     { timestamps: true }
 
