@@ -1,8 +1,6 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
-	console.log(options);
-
 	// 1) Create a transporter
 	const transporter = nodemailer.createTransport({
 		host: process.env.EMAIL_HOST,
@@ -12,7 +10,6 @@ const sendEmail = async (options) => {
 			pass: process.env.SENDGRID_PASSWORD,
 		},
 	});
-	console.log(transporter);
 
 	// 2) Define the email options
 	const mailOptions = {

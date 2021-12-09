@@ -11,11 +11,11 @@ router.post('/loginAdmin', authController.loginAdmin);
 router.post('/forgotPassword', authController.forgotPassword);
 router.put('/resetPassword/:token', authController.resetPassword);
 
-// router.put(
-// 	'/updateMyPassword',
-// 	authController.protect,
-// 	authController.updatePassword,
-// );
+router.put(
+	'/updateMyPassword',
+	authController.protect,
+	authController.updatePassword,
+);
 
 // router.get(
 // 	'/me',
