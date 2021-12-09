@@ -5,8 +5,9 @@ exports.checkEmployeeAccess = (Model) =>
 	catchAsync(async (req, res, next) => {
 		console.log(req.params.id);
 		const data = await Model.findById(req.params.id);
-
+		console.log(data);
 		if (
+			data.id === req.employee.id ||
 			data.id === req.employee.employee_data.toString() ||
 			data.id === req.employee.payroll.toString() ||
 			data.id === req.employee.emergency_contact.toString() ||

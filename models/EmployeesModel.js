@@ -60,7 +60,7 @@ const EmployeesSchema = new mongoose.Schema(
 		employee_data: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmployeeData',
-      unique:true,
+			unique: true,
 			required: [true, 'Employee must have data'],
 		},
 		payroll: {
@@ -71,17 +71,17 @@ const EmployeesSchema = new mongoose.Schema(
 		emergency_contact: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmergencyContact',
-      unique:true,
+			unique: true,
 			required: [true, 'Employee must have emergency contacts'],
 		},
-    documents: {
+		documents: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Documents',
-      unique:true,
+			unique: true,
 			required: [true, 'Employee must have their'],
 		},
 		passwordChangedAt: Date,
-		passwordResetToken: Date,
+		passwordResetToken: String,
 		passwordResetExpires: Date,
 	},
 	{ timestamps: true },

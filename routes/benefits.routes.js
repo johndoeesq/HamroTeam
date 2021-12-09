@@ -24,7 +24,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-
+		authController.restrictTo('admin'),
 		benefitsController.getBenefits,
 	)
 	.put(
