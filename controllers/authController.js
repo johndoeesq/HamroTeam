@@ -2,11 +2,12 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const Employee = require('./../models/EmployeesModel');
-const Token = require('../models/TokenModel.js');
+const Token = require('../models/tokenModel.js');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
+const sendEmail = require('../utils/email');
 
 const signToken = (id, role) => {
 	return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -61,39 +62,11 @@ exports.login = catchAsync(async (req, res, next) => {
 	if (employee.role === 'admin') {
 		return next(new AppError('Not for admin login', 401));
 	}
-	// if (!employee.isVerified) {
-	//   return res.status(401).send({
-	//     status: 'fail',
-	//     message: 'Your Email has not been verified. Please click on resend',
-	//   });
-	// }
 
-	// 3) If everything ok, send token to client
-	// if (employee.isVerified === false) {
-	// 	return next(new AppError('Account not verified', 403));
-	// }
 	createSendToken(employee, 200, req, res);
 });
 
 exports.loginAdmin = catchAsync(async (req, res, next) => {
-	// console.log(req);
-	// const schema = Joi.object({
-	//   password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
-	//   email: Joi.string().email({
-	//     minDomainSegments: 2,
-	//     tlds: { allow: ["com", "net"] },
-	//   }),
-	// });
-
-	// const { error } = schema.validate({
-	//   email: req.body.email,
-	//   password: req.body.password,
-	// });
-
-	// if (error) {
-	//   return next(new AppError(`${error.details[0].message}`, 403));
-	// }
-
 	const { email, password } = req.body;
 
 	// 1) Check if email and password exist
@@ -110,12 +83,6 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
 	if (employee.role === 'employee') {
 		return next(new AppError('Not for employee login', 401));
 	}
-	// if (!employee.isVerified) {
-	//   return res.status(401).send({
-	//     status: 'fail',
-	//     message: 'Your Email has not been verified. Please click on resend',
-	//   });
-	// }
 
 	// 3) If everything ok, send token to client
 	createSendToken(employee, 200, req, res);
@@ -130,9 +97,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 	) {
 		token = req.headers.authorization.split(' ')[1];
 	}
-	// else if (req.cookies.jwt) {
-	//   token = req.cookies.jwt;
-	// }
 
 	if (!token) {
 		return next(
@@ -162,7 +126,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	if (currentemployee.changedPasswordAfter(decoded.iat)) {
 		return next(
 			new AppError(
-				'employee recently changed password! Please log in again.',
+				'Employee recently changed password! Please log in again.',
 				401,
 			),
 		);
@@ -175,37 +139,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 	// res.locals.employee = currentemployee;
 	next();
 });
-
-// Only for rendered pages, no errors!
-// exports.isLoggedIn = async (req, res, next) => {
-//   if (req.cookies.jwt) {
-//     try {
-//       // 1) verify token
-//       const decoded = await promisify(jwt.verify)(
-//         req.cookies.jwt,
-//         process.env.JWT_SECRET
-//       );
-
-//       // 2) Check if employee still exists
-//       const currentemployee = await employee.findById(decoded.id);
-//       if (!currentemployee) {
-//         return next();
-//       }
-
-//       // 3) Check if employee changed password after the token was issued
-//       if (currentemployee.changedPasswordAfter(decoded.iat)) {
-//         return next();
-//       }
-
-//       // THERE IS A LOGGED IN employee
-//       res.locals.employee = currentemployee;
-//       return next();
-//     } catch (err) {
-//       return next();
-//     }
-//   }
-//   next();
-// };
 
 //Route protection  to only admin
 exports.restrictTo = (...roles) => {
@@ -243,7 +176,7 @@ exports.restrictToBoth = (...roles) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee based on POSTed email
-	const employee = await employee.findOne({ email: req.body.email });
+	const employee = await Employee.findOne({ email: req.body.email });
 	if (!employee) {
 		return next(
 			new AppError('There is no employee with email address.', 404),
@@ -258,7 +191,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 	try {
 		const resetURL = `${req.protocol}://${req.get(
 			'host',
-		)}/api/v1/employees/resetPassword/${resetToken}`;
+		)}/api/v1/auth/resetPassword/${resetToken}`;
 
 		const message = `Forgot Your Password? Submit a Patch Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
 
@@ -303,7 +236,11 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 	employee.passwordConfirm = req.body.passwordConfirm;
 	employee.passwordResetToken = undefined;
 	employee.passwordResetExpires = undefined;
-	await employee.save();
+	if (employee.password == employee.passwordConfirm) {
+		await employee.save();
+	} else {
+		return next(new AppError('Password didnt match', 400));
+	}
 
 	// 3) Update changedPasswordAt property for the employee
 	// 4) Log the employee in, send JWT

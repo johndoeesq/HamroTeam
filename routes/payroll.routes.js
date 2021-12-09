@@ -10,8 +10,9 @@ router
 	.route('/')
 	.get(
 		allqueryresults(Payroll, {
-			path: benefits,
-			select: 'accomodation transport',
+			path: 'benefits',
+			select:
+				'accomodation transport gadgets insurance lunch_fare transport_fare miscellaneous_fare',
 		}),
 		authController.protect,
 		authController.restrictTo('admin'),

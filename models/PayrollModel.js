@@ -19,9 +19,9 @@ const PayrollSchema = new mongoose.Schema(
 			type: Number,
 		},
 		benefits: {
-			type: mongoose.Schema.ObjectId,
-			ref: 'Benefits',
-			unique:true
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'benefits',
+			unique: true,
 		},
 	},
 	{
