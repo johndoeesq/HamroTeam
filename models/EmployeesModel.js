@@ -32,7 +32,7 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Available days must be mentioned'],
 		},
 		available_hours: {
-			type: String,
+			type: Number,
 			required: [true, 'Available hours must be mentioned'],
 		},
 		recruitment_date: {

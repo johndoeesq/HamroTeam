@@ -8,6 +8,8 @@ const AppError = require('./../utils/appError');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 
+const sendEmail= require("../utils/email");
+
 const signToken = (id, role) => {
 	return jwt.sign({ id, role }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRES_IN,
@@ -243,7 +245,7 @@ exports.restrictToBoth = (...roles) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee based on POSTed email
-	const employee = await employee.findOne({ email: req.body.email });
+	const employee = await Employee.findOne({ email: req.body.email });
 	if (!employee) {
 		return next(
 			new AppError('There is no employee with email address.', 404),
@@ -252,21 +254,24 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
 	// 2) Generate the random reset token
 	const resetToken = employee.createPasswordResetToken();
+	
 	await employee.save({ validateBeforeSave: false });
+	
 
 	// 3) Send it to employee's email
 	try {
 		const resetURL = `${req.protocol}://${req.get(
 			'host',
 		)}/api/v1/employees/resetPassword/${resetToken}`;
-
-		const message = `Forgot Your Password? Submit a Patch Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
-
+       
+		const message = `Forgot Your Password? Submit a PUT Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
+     
 		await sendEmail({
 			email: employee.email,
 			subject: 'Your password reset token valid for 10 minutes.',
 			message,
 		});
+		
 		res.status(200).json({
 			status: 'success',
 			message: 'Token sent to email!',
@@ -290,6 +295,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 		.update(req.params.token)
 		.digest('hex');
 
+      console.log(hashedToken)
+	 
 	const employee = await Employee.findOne({
 		passwordResetToken: hashedToken,
 		passwordResetExpires: { $gt: Date.now() },

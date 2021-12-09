@@ -9,10 +9,7 @@ const router = express.Router();
 router
 	.route('/')
 	.get(
-		allqueryresults(Payroll, {
-			path: benefits,
-			select: 'accomodation transport',
-		}),
+		allqueryresults(Payroll),
 		authController.protect,
 		authController.restrictTo('admin'),
 		payrollController.getAllPayroll,
