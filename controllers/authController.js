@@ -9,7 +9,6 @@ const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const sendEmail = require('../utils/email');
 
-const sendEmail= require("../utils/email");
 
 const signToken = (id, role) => {
 	return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -195,17 +194,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 	try {
 		const resetURL = `${req.protocol}://${req.get(
 			'host',
-<<<<<<< HEAD
-		)}/api/v1/employees/resetPassword/${resetToken}`;
-       
-		const message = `Forgot Your Password? Submit a PUT Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
-     
-=======
 		)}/api/v1/auth/resetPassword/${resetToken}`;
-
+		
 		const message = `Forgot Your Password? Submit a Patch Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
+		
 
->>>>>>> d7cc6475b80a5aac987786bbe1150ac8361348ff
 		await sendEmail({
 			email: employee.email,
 			subject: 'Your password reset token valid for 10 minutes.',
