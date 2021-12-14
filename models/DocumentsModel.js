@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const DocumentsSchema = new mongoose.Schema(
 	{
-		CV: {
+		resume: {
 			type: String,
 			required: [true, 'This field is required'],
 		},
@@ -11,7 +11,7 @@ const DocumentsSchema = new mongoose.Schema(
 			required: [true, 'This field is required'],
 		},
 		passport: {
-			type: String,
+			type: Number,
 		},
 		PAN: {
 			type: String,

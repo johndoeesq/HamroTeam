@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const PayrollSchema = new mongoose.Schema(
 	{
-		salary: {
+		basic_salary: {
 			type: Number,
 			require: [true, 'An employee must have a salary'],
 		},
@@ -15,7 +15,7 @@ const PayrollSchema = new mongoose.Schema(
 		company_pf: {
 			type: Number,
 		},
-		final_salary: {
+		net_salary: {
 			type: Number,
 		},
 		benefits: {

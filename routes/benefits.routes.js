@@ -9,9 +9,9 @@ const router = express.Router();
 router
 	.route('/')
 	.get(
-		allqueryresults(Benefits),
 		authController.protect,
 		authController.restrictToBoth('admin'),
+		allqueryresults(Benefits),
 		benefitsController.getAllBenefits,
 	)
 	.post(

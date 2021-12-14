@@ -185,21 +185,23 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
 	// 2) Generate the random reset token
 	const resetToken = employee.createPasswordResetToken();
+
 	await employee.save({ validateBeforeSave: false });
 
 	// 3) Send it to employee's email
 	try {
 		const resetURL = `${req.protocol}://${req.get(
 			'host',
-		)}/api/v1/auth/resetPassword/${resetToken}`;
+		)}/api/v1/employees/resetPassword/${resetToken}`;
 
-		const message = `Forgot Your Password? Submit a Patch Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
+		const message = `Forgot Your Password? Submit a PUT Request with your new password and PasswordConfirm to : ${resetURL} \n If you did not forget your password , please ignore this message.`;
 
 		await sendEmail({
 			email: employee.email,
 			subject: 'Your password reset token valid for 10 minutes.',
 			message,
 		});
+
 		res.status(200).json({
 			status: 'success',
 			message: 'Token sent to email!',
@@ -222,6 +224,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 		.createHash('sha256')
 		.update(req.params.token)
 		.digest('hex');
+
+	console.log(hashedToken);
 
 	const employee = await Employee.findOne({
 		passwordResetToken: hashedToken,

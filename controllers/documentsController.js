@@ -3,6 +3,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const multer = require('multer');
 const factory = require('./handlerFactory');
+const { object } = require('joi');
 
 //@desc Create new Document
 //POST api/v1/documents
@@ -44,41 +45,75 @@ const upload = multer({
 	fileFilter: multerFilter,
 });
 
-(exports.uploadFile = upload.fields([
-	{ name: 'CV', maxCount: 1 },
+exports.uploadFile = upload.fields([
+	{ name: 'resume', maxCount: 1 },
 	{ name: 'citizenship', maxCount: 1 },
 	{ name: 'PAN', maxCount: 1 },
 	{ name: 'photo', maxCount: 1 },
 	{ name: 'offerletter', maxCount: 1 },
 	{ name: 'contract', maxCount: 1 },
-])),
-	(exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
-		if (!req.files) return next();
+]);
 
-		// console.log(req.files, "ma data check gardai xu")
+exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
+	if (!req.files) return next();
+	// let data = [
+	// 	'resume',
+	// 	'citizenship',
+	// 	'PAN',
+	// 	'photo',
+	// 	'offerletter',
+	// 	'contract',
+	// ];
+	// console.log(req.files, "ma data check gardai xu")
 
-		req.files.map((file) => {
-			if (file.mimetype.startsWith('application')) {
-				req.body.files.push(
-					`${req.protocol}://${req.get(
-						'host',
-					)}/public/files/${`document_${Date.now()}-${
-						file.originalname
-					}`}`,
-				);
-			} else {
-				req.body.images.push(
-					`${req.protocol}://${req.get(
-						'host',
-					)}/public/photos/${`documentImages_${Date.now()}-${
-						file.originalname
-					}`}`,
-				);
-			}
-		});
+	// data.map((item) => {
+	// 	req.body.item = `${req.protocol}://${req.get(
+	// 		'host',
+	// 	)}/public/files/${`document_${Date.now()}-${
+	// 		req.files[item][0].originalname
+	// 	}`}`;
+	// });
 
-		next();
-	}));
+	// next();
+
+	req.body.resume = `${req.protocol}://${req.get(
+		'host',
+	)}/public/files/${`document_${Date.now()}-${
+		req.files['resume'][0].originalname
+	}`}`;
+
+	req.body.citizenship = `${req.protocol}://${req.get(
+		'host',
+	)}/public/files/${`document_${Date.now()}-${
+		req.files['citizenship'][0].originalname
+	}`}`;
+
+	req.body.PAN = `${req.protocol}://${req.get(
+		'host',
+	)}/public/files/${`document_${Date.now()}-${
+		req.files['PAN'][0].originalname
+	}`}`;
+
+	req.body.photo = `${req.protocol}://${req.get(
+		'host',
+	)}/public/files/${`document_${Date.now()}-${
+		req.files['photo'][0].originalname
+	}`}`;
+
+	req.body.offerletter = `${req.protocol}://${req.get(
+		'host',
+	)}/public/files/${`document_${Date.now()}-${
+		req.files['offerletter'][0].originalname
+	}`}`;
+
+	req.body.contract = `${req.protocol}://${req.get(
+		'host',
+	)}/public/files/${`document_${Date.now()}-${
+		req.files['contract'][0].originalname
+	}`}`;
+
+	next();
+});
 
 exports.createDocuments = catchAsync(async (req, res, next) => {
 	const newDocument = await Documents.create(req.body);
@@ -113,3 +148,7 @@ exports.updateDocuments = factory.updateOne(Documents);
 //PATCH api/v1/documents/:id
 //Private
 exports.deleteDocuments = factory.deleteOne(Documents);
+
+//const convertArrayToObj = (val, key) =>
+// val.reduce((obj, item) => ((obj[[item[key]]] = item), obj), {});
+// console.log(val);
