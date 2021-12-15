@@ -10,9 +10,7 @@ const DocumentsSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'This field is required'],
 		},
-		passport: {
-			type: Number,
-		},
+
 		PAN: {
 			type: String,
 		},
@@ -20,9 +18,7 @@ const DocumentsSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'This field is required'],
 		},
-		bank_acc: {
-			type: String,
-		},
+
 		offer_letter: {
 			type: String,
 		},

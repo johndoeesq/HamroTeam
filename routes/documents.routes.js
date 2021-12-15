@@ -23,7 +23,7 @@ router
 		// read images
 		documentsController.uploadFile,
 		// image controller
-		documentsController.resizeDocumentsPhoto,
+		//	documentsController.resizeDocumentsPhoto,
 
 		documentsController.createDocuments,
 	);
@@ -41,7 +41,7 @@ router
 		authController.restrictTo('admin'),
 		documentsController.uploadFile,
 		// image controller
-		documentsController.resizeDocumentsPhoto,
+		//	documentsController.resizeDocumentsPhoto,
 		documentsController.updateDocuments,
 	)
 	.delete(

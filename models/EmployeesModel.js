@@ -80,6 +80,10 @@ const EmployeesSchema = new mongoose.Schema(
 			unique: true,
 			required: [true, 'Employee must have their'],
 		},
+		photo: {
+			type: String,
+			required: [true, 'An employee must have a photo'],
+		},
 		passwordChangedAt: Date,
 		passwordResetToken: String,
 		passwordResetExpires: Date,

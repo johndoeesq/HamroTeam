@@ -54,69 +54,70 @@ exports.uploadFile = upload.fields([
 	{ name: 'contract', maxCount: 1 },
 ]);
 
-exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
-	if (!req.files) return next();
-	// let data = [
-	// 	'resume',
-	// 	'citizenship',
-	// 	'PAN',
-	// 	'photo',
-	// 	'offerletter',
-	// 	'contract',
-	// ];
-	// console.log(req.files, "ma data check gardai xu")
+//exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 
-	// data.map((item) => {
-	// 	req.body.item = `${req.protocol}://${req.get(
-	// 		'host',
-	// 	)}/public/files/${`document_${Date.now()}-${
-	// 		req.files[item][0].originalname
-	// 	}`}`;
-	// });
+// req.body.resume = `${req.protocol}://${req.get(
+// 	'host',
+// )}/public/files/${`document_${Date.now()}-${
+// 	req.files['resume'][0].originalname
+// }`}`;
 
-	// next();
+// req.body.citizenship = `${req.protocol}://${req.get(
+// 	'host',
+// )}/public/files/${`document_${Date.now()}-${
+// 	req.files['citizenship'][0].originalname
+// }`}`;
 
-	req.body.resume = `${req.protocol}://${req.get(
-		'host',
-	)}/public/files/${`document_${Date.now()}-${
-		req.files['resume'][0].originalname
-	}`}`;
+// req.body.PAN = `${req.protocol}://${req.get(
+// 	'host',
+// )}/public/files/${`document_${Date.now()}-${
+// 	req.files['PAN'][0].originalname
+// }`}`;
 
-	req.body.citizenship = `${req.protocol}://${req.get(
-		'host',
-	)}/public/files/${`document_${Date.now()}-${
-		req.files['citizenship'][0].originalname
-	}`}`;
+// req.body.photo = `${req.protocol}://${req.get(
+// 	'host',
+// )}/public/files/${`document_${Date.now()}-${
+// 	req.files['photo'][0].originalname
+// }`}`;
 
-	req.body.PAN = `${req.protocol}://${req.get(
-		'host',
-	)}/public/files/${`document_${Date.now()}-${
-		req.files['PAN'][0].originalname
-	}`}`;
+// req.body.offerletter = `${req.protocol}://${req.get(
+// 	'host',
+// )}/public/files/${`document_${Date.now()}-${
+// 	req.files['offerletter'][0].originalname
+// }`}`;
 
-	req.body.photo = `${req.protocol}://${req.get(
-		'host',
-	)}/public/files/${`document_${Date.now()}-${
-		req.files['photo'][0].originalname
-	}`}`;
+// req.body.contract = `${req.protocol}://${req.get(
+// 	'host',
+// )}/public/files/${`document_${Date.now()}-${
+// 	req.files['contract'][0].originalname
+// }`}`;
 
-	req.body.offerletter = `${req.protocol}://${req.get(
-		'host',
-	)}/public/files/${`document_${Date.now()}-${
-		req.files['offerletter'][0].originalname
-	}`}`;
-
-	req.body.contract = `${req.protocol}://${req.get(
-		'host',
-	)}/public/files/${`document_${Date.now()}-${
-		req.files['contract'][0].originalname
-	}`}`;
-
-	next();
-});
+// 	next();
+// });
 
 exports.createDocuments = catchAsync(async (req, res, next) => {
-	const newDocument = await Documents.create(req.body);
+	if (!req.files) return next();
+	let data = [
+		'resume',
+		'citizenship',
+		'PAN',
+		'photo',
+		'offerletter',
+		'contract',
+	];
+	let val = [];
+	data.map((item) => {
+		req.body.item = `${req.protocol}://${req.get(
+			'host',
+		)}/public/files/${`document_${Date.now()}-${
+			req.files[item][0].originalname
+		}`}`;
+		val.push([item, req.body.item]);
+	});
+
+	let result = Object.fromEntries(val);
+
+	const newDocument = await Documents.create(result);
 	res.status(201).json({ status: 'success', data: newDocument });
 });
 
