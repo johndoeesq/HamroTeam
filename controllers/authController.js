@@ -184,6 +184,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 		);
 	}
 
+	
 	// 2) Generate the random reset token
 	const resetToken = employee.createPasswordResetToken();
 	

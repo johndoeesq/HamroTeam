@@ -61,17 +61,19 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
   req.body.images = req.body.images || []
 
   req.files.map(file => {
-    
 
     if(file.mimetype.startsWith('application')){
       req.body.files.push(`${req.protocol}://${req.get("host")}/public/files/${
       `document-${Date.now()}-${file.originalname}`
       }`)
+      console.log(req.files)
     }
+    
     else{
       req.body.images.push(`${req.protocol}://${req.get("host")}/public/photos/${
           `documentImages-${Date.now()}-${file.originalname}`
       }`)
+      console.log(req.files)
     }
   })
 
