@@ -18,8 +18,6 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo('admin'),
-		employeeDataController.uploadEmployeePhoto,
-		employeeDataController.resizeEmployeePhoto,
 		employeeDataController.createEmployeeData,
 	);
 
@@ -34,8 +32,7 @@ router
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
-		employeeDataController.uploadEmployeePhoto,
-		employeeDataController.resizeEmployeePhoto,
+
 		employeeDataController.updateemployeeData,
 	)
 	.delete(
