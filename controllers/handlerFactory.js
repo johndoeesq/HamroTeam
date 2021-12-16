@@ -1,6 +1,7 @@
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 
+//Delete one document
 exports.deleteOne = (Model) =>
 	catchAsync(async (req, res, next) => {
 		const doc = await Model.findByIdAndDelete(req.params.id);
@@ -15,6 +16,7 @@ exports.deleteOne = (Model) =>
 		});
 	});
 
+//Update single document
 exports.updateOne = (Model) =>
 	catchAsync(async (req, res, next) => {
 		console
@@ -33,6 +35,7 @@ exports.updateOne = (Model) =>
 		});
 	});
 
+//Create single document
 exports.createOne = (Model) =>
 	catchAsync(async (req, res, next) => {
 		const doc = await Model.create(req.body);
@@ -41,5 +44,22 @@ exports.createOne = (Model) =>
 			status: 'success',
 			results: doc.length,
 			data: { doc },
+		});
+	});
+
+//Get Single Document
+exports.getOne = (Model, popOptions) =>
+	catchAsync(async (req, res, next) => {
+		let query = Model.findById(req.params.id);
+		if (popOptions) query = query.populate(popOptions);
+		const doc = await query;
+
+		if (!doc) {
+			return next(new AppError('No document found with that ID', 404));
+		}
+
+		res.status(200).json({
+			status: 'success',
+			data: doc,
 		});
 	});

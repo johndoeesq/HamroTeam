@@ -4,6 +4,10 @@ const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 const multer = require('multer');
 const sharp = require('sharp');
+const Documents = require('../models/DocumentsModel');
+const EmployeeData = require('../models/EmployeeDataModel');
+const Payroll = require('../models/PayrollModel');
+const EmergencyContact = require('../models/EmergencyContactModel');
 
 //@desc Create new Employee Data
 //POST api/v1/employeedata
@@ -45,8 +49,27 @@ exports.resizeEmployeePhoto = catchAsync(async (req, res, next) => {
 });
 
 exports.createEmployees = catchAsync(async (req, res, next) => {
-	newEmployee = await Employees.create(req.body);
-	res.status(201).json({ status: 'success', data: { newEmployee } });
+	const employeeData = await EmployeeData.findById(req.body.employee_data);
+	if (!employeeData) {
+		return next(new AppError('No employeeData found with that id', 404));
+	}
+	const documents = await Documents.findById(req.body.documents);
+	if (!documents) {
+		return next(new AppError('No documents found with that id', 404));
+	}
+	const payroll = await Payroll.findById(req.body.payroll);
+	if (!payroll) {
+		return next(new AppError('No payroll found with that id', 404));
+	}
+
+	const emergencyContact = await EmergencyContact.findById(
+		req.body.emergency_contact,
+	);
+	if (!emergencyContact) {
+		return next(new AppError('No emergencyContact found with that id', 404));
+	}
+
+	factory.createOne(Employees);
 });
 
 //@desc Get All Employees
@@ -59,14 +82,7 @@ exports.getAllEmployees = catchAsync(async (req, res, next) => {
 //@desc Get Single Employee
 //GET api/v1/employees
 //Public
-exports.getEmployee = catchAsync(async (req, res, next) => {
-	const employee = await Employees.findById(req.params.id);
-
-	if (!employee) {
-		return next(new AppError('No employee found with that id', 404));
-	}
-	res.status(200).json({ status: 'success', data: { employee } });
-});
+exports.getEmployee = factory.getOne(Employees);
 
 //@desc Delete single Employee
 //DELETE api/v1/employeedata/:id

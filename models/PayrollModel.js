@@ -18,6 +18,9 @@ const PayrollSchema = new mongoose.Schema(
 		net_salary: {
 			type: Number,
 		},
+		bank_acc: {
+			type: String,
+		},
 		benefits: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'benefits',
