@@ -1,4 +1,5 @@
 const Payroll = require('../models/PayrollModel');
+const Benefits = require('../models/BenefitsModel');
 const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
@@ -18,7 +19,7 @@ exports.getAllPayroll = catchAsync(async (req, res, next) => {
 //GET api/v1/payroll/:id
 //Public
 exports.getPayroll = catchAsync(async (req, res, next) => {
-	const benefits = await Projects.findById(req.body.benefits);
+	const benefits = await Benefits.findById(req.body.benefits);
 
 	if (!benefits) {
 		return next(new AppError('No Benefits found with that id', 404));
