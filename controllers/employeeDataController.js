@@ -1,3 +1,4 @@
+const EmergencyContact = require('../models/EmergencyContactModel');
 const EmployeeData = require('../models/EmployeeDataModel');
 const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');
@@ -18,14 +19,7 @@ exports.getAllEmployeeData = catchAsync(async (req, res, next) => {
 //@desc get single Employee Data
 //GET api/v1/employeedata/:id
 //Public
-exports.getEmployeeData = catchAsync(async (req, res, next) => {
-	const employeeData = await EmployeeData.findById(req.params.id);
-
-	if (!employeeData) {
-		return next(new AppError('No employeeData found with that id', 404));
-	}
-	res.status(200).json({ status: 'success', data: { employeeData } });
-});
+exports.getEmployeeData = factory.getOne(EmployeeData);
 
 //@desc Delete single Employee Data
 //DELETE api/v1/employeedata/:id

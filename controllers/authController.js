@@ -28,6 +28,7 @@ const createSendToken = (employee, statusCode, req, res) => {
 	});
 };
 
+//Employee login
 exports.login = catchAsync(async (req, res, next) => {
 	const schema = Joi.object({
 		password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
@@ -66,6 +67,7 @@ exports.login = catchAsync(async (req, res, next) => {
 	createSendToken(employee, 200, req, res);
 });
 
+//Admin Login
 exports.loginAdmin = catchAsync(async (req, res, next) => {
 	const { email, password } = req.body;
 
@@ -88,6 +90,7 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
 	createSendToken(employee, 200, req, res);
 });
 
+//Token Check
 exports.protect = catchAsync(async (req, res, next) => {
 	// 1) Getting token and check of it's there
 	let token;
@@ -174,6 +177,7 @@ exports.restrictToBoth = (...roles) => {
 	};
 };
 
+//Forgot Password Email send Section
 exports.forgotPassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee based on POSTed email
 	const employee = await Employee.findOne({ email: req.body.email });
@@ -218,6 +222,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 	}
 });
 
+//This is hit through email generated api for resetting the password
 exports.resetPassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee based on the token
 	const hashedToken = crypto
@@ -251,6 +256,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 	createSendToken(employee, 200, req, res);
 });
 
+//For updating the password+
 exports.updatePassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee from collection
 	const employee = await Employee.findById(req.employee.id).select(

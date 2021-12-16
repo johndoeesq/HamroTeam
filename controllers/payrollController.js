@@ -6,11 +6,7 @@ const factory = require('./handlerFactory');
 //@desc Create new Payroll
 //POST api/v1/payroll
 //Private
-exports.createPayroll = catchAsync(async (req, res, next) => {
-	payroll = await Payroll.create(req.body);
-	res.status(201).json({ status: 'success', data: payroll });
-});
-
+exports.createPayroll = factory.createOne(Payroll);
 //@desc  get all Payroll
 //GET api/v1/payroll
 //Public
@@ -22,12 +18,12 @@ exports.getAllPayroll = catchAsync(async (req, res, next) => {
 //GET api/v1/payroll/:id
 //Public
 exports.getPayroll = catchAsync(async (req, res, next) => {
-	const payroll = await Payroll.findById(req.params.id);
+	const benefits = await Projects.findById(req.body.benefits);
 
-	if (!payroll) {
-		return next(new AppError('No Payroll found with that id', 404));
+	if (!benefits) {
+		return next(new AppError('No Benefits found with that id', 404));
 	}
-	res.status(200).json({ status: 'success', data: { payroll } });
+	factory.getOne(Payroll);
 });
 
 //@desc Delete single Payroll

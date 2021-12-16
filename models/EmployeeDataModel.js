@@ -34,9 +34,6 @@ const EmployeeDataSchema = new mongoose.Schema(
 		passport: {
 			type: Number,
 		},
-		bank_acc: {
-			type: String,
-		},
 	},
 	{
 		timestamps: true,
