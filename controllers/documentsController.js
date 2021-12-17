@@ -74,8 +74,8 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 		val.push([item, req.body.item]);
 	});
 
-	const result = Object.fromEntries(val);
-	return result;
+	result = Object.fromEntries(val);
+	
 
 	// req.body.resume = `${req.protocol}://${req.get(
 	// 	'host',
@@ -117,6 +117,7 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 });
 
 exports.createDocuments = catchAsync(async (req, res, next) => {
+	console.log(result)
 	const newDocument = await Documents.create(result);
 	res.status(201).json({ status: 'success', data: newDocument });
 });
