@@ -23,7 +23,7 @@ router
 		// read images
 		documentsController.uploadFile,
 		// image controller
-		//	documentsController.resizeDocumentsPhoto,
+		documentsController.resizeDocumentsPhoto,
 
 		documentsController.createDocuments,
 	);

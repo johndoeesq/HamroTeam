@@ -24,7 +24,6 @@ const PayrollSchema = new mongoose.Schema(
 		benefits: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'benefits',
-			unique: true,
 		},
 	},
 	{

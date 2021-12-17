@@ -19,7 +19,7 @@ const DocumentsSchema = new mongoose.Schema(
 			required: [true, 'This field is required'],
 		},
 
-		offer_letter: {
+		offerletter: {
 			type: String,
 		},
 		contract: {
