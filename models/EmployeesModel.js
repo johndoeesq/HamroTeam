@@ -57,6 +57,11 @@ const EmployeesSchema = new mongoose.Schema(
 			enum: ['admin', 'employee'],
 			required: [true, 'Role must be assigned'],
 		},
+		type: {
+			type: String,
+			enum: ['freelancing', 'intern', 'fulltime'],
+			required: [true, 'An employee must have a type'],
+		},
 		employee_data: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmployeeData',
