@@ -109,7 +109,3 @@ exports.updateDocuments = factory.updateOne(Documents);
 //PATCH api/v1/documents/:id
 //Private
 exports.deleteDocuments = factory.deleteOne(Documents);
-
-//const convertArrayToObj = (val, key) =>
-// val.reduce((obj, item) => ((obj[[item[key]]] = item), obj), {});
-// console.log(val);
