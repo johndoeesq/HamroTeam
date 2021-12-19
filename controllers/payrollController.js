@@ -9,15 +9,15 @@ const factory = require('./handlerFactory');
 //Private
 exports.createPayroll = catchAsync(async (req, res, next) => {
 	const benefits = await Benefits.findById(req.body.benefits);
-
+	console.log(benefits);
 	if (!benefits) {
 		return next(new AppError('No Benefits found with that id', 404));
 	}
 	const payroll = await Payroll.create(req.body);
 	res.status(200).json({
-		status: 'Success',
-		data: payroll
-	})
+		status: 'success',
+		data: payroll,
+	});
 });
 //@desc  get all Payroll
 //GET api/v1/payroll
@@ -29,8 +29,7 @@ exports.getAllPayroll = catchAsync(async (req, res, next) => {
 //@desc get single Payroll
 //GET api/v1/payroll/:id
 //Public
-exports.getPayroll = factory.getOne(Payroll)
-
+exports.getPayroll = factory.getOne(Payroll);
 //@desc Delete single Payroll
 //DELETE api/v1/payroll/:id
 //Private

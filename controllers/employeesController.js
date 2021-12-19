@@ -68,8 +68,11 @@ exports.createEmployees = catchAsync(async (req, res, next) => {
 	if (!emergencyContact) {
 		return next(new AppError('No emergencyContact found with that id', 404));
 	}
-
-	factory.createOne(Employees);
+ const employee= await Employees.create(req.body)
+ res.status(200).json({
+	 status:'success',
+	 data:employee
+ })
 });
 
 //@desc Get All Employees

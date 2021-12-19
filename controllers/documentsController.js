@@ -56,6 +56,7 @@ exports.uploadFile = upload.fields([
 
 exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 	if (!req.files) return next();
+
 	let data = [
 		'resume',
 		'citizenship',
@@ -66,52 +67,18 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 	];
 	let val = [];
 	data.map((item) => {
+		if (!req.files[item]) {
+			return;
+		}
 		req.body.item = `${req.protocol}://${req.get(
 			'host',
 		)}/public/files/${`document_${Date.now()}-${
 			req.files[item][0].originalname
 		}`}`;
+
 		val.push([item, req.body.item]);
 	});
-
 	result = Object.fromEntries(val);
-	
-
-	// req.body.resume = `${req.protocol}://${req.get(
-	// 	'host',
-	// )}/public/files/${`document_${Date.now()}-${
-	// 	req.files['resume'][0].originalname
-	// }`}`;
-
-	// req.body.citizenship = `${req.protocol}://${req.get(
-	// 	'host',
-	// )}/public/files/${`document_${Date.now()}-${
-	// 	req.files['citizenship'][0].originalname
-	// }`}`;
-
-	// req.body.PAN = `${req.protocol}://${req.get(
-	// 	'host',
-	// )}/public/files/${`document_${Date.now()}-${
-	// 	req.files['PAN'][0].originalname
-	// }`}`;
-
-	// req.body.photo = `${req.protocol}://${req.get(
-	// 	'host',
-	// )}/public/files/${`document_${Date.now()}-${
-	// 	req.files['photo'][0].originalname
-	// }`}`;
-
-	// req.body.offerletter = `${req.protocol}://${req.get(
-	// 	'host',
-	// )}/public/files/${`document_${Date.now()}-${
-	// 	req.files['offerletter'][0].originalname
-	// }`}`;
-
-	// req.body.contract = `${req.protocol}://${req.get(
-	// 	'host',
-	// )}/public/files/${`document_${Date.now()}-${
-	// 	req.files['contract'][0].originalname
-	// }`}`;
 
 	next();
 });
@@ -132,15 +99,7 @@ exports.getAllDocuments = catchAsync(async (req, res, next) => {
 //@desc Get single document
 //GET api/v1/documents/:id
 //Private
-exports.getDocuments = catchAsync(async (req, res, next) => {
-	const document = await Documents.findById(req.params.id);
-
-	if (!document) {
-		return next(new AppError('No document found with that id', 404));
-	}
-	res.status(200).json({ status: 'success', data: document });
-});
-
+exports.getDocuments = factory.getOne(Documents);
 //@desc Update the document
 //PATCH api/v1/docments/:id
 //Private
