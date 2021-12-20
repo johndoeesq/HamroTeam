@@ -12,13 +12,19 @@ const PayrollSchema = new mongoose.Schema(
 		tax: {
 			type: Number,
 		},
-		company_pf: {
+		allowance: {
 			type: Number,
 		},
-		net_salary: {
+		gross_salary: {
 			type: Number,
 		},
 		bank_acc: {
+			type: String,
+		},
+		bank_name: {
+			type: String,
+		},
+		bank_branch: {
 			type: String,
 		},
 		benefits: {

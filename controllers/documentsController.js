@@ -33,7 +33,7 @@ const multerFilter = (req, file, cb) => {
 	}
 	// else uploading image
 	else if (file.mimetype.startsWith('image')) {
-		// check file type to be png, jpeg, or jpg
+		// check file type to be an image
 		cb(null, true);
 	} else {
 		cb(null, false); // else fails
@@ -78,6 +78,7 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 
 		val.push([item, req.body.item]);
 	});
+
 	result = Object.fromEntries(val);
 
 	next();
