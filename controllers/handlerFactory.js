@@ -19,14 +19,11 @@ exports.deleteOne = (Model) =>
 //Update single document
 exports.updateOne = (Model) =>
 	catchAsync(async (req, res, next) => {
-<<<<<<< HEAD
-		console
-=======
+	
 		//To check if the req.body is empty
 		if (Object.keys(req.body).length === 0) {
 			return next(new AppError(`Nothing to update`, 200));
 		}
->>>>>>> 3912e7d38fa5bda6e1e43390bdcf043525ff9fe5
 		const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
 			runValidators: true,
