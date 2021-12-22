@@ -35,13 +35,9 @@ const EmployeesSchema = new mongoose.Schema(
 			type: Number,
 			required: [true, 'Available hours must be mentioned'],
 		},
-		recruitment_date: {
+		joining_date: {
 			type: String,
-			required: [true, 'Recruitment date must be mentioned'],
-		},
-		hiring_date: {
-			type: String,
-			required: [true, 'Hiring date must be mentioned'],
+			required: [true, 'Joining date must be mentioned'],
 		},
 		promotion_date: {
 			type: String,

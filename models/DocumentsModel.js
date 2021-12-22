@@ -4,11 +4,11 @@ const DocumentsSchema = new mongoose.Schema(
 	{
 		resume: {
 			type: String,
-			//required: [true, 'This field is required'],
+			required: [true, 'This field is required'],
 		},
 		citizenship: {
 			type: String,
-			//required: [true, 'This field is required'],
+			required: [true, 'This field is required'],
 		},
 
 		PAN: {
@@ -16,7 +16,7 @@ const DocumentsSchema = new mongoose.Schema(
 		},
 		photo: {
 			type: String,
-			//required: [true, 'This field is required'],
+			required: [true, 'This field is required'],
 		},
 
 		offerletter: {

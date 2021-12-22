@@ -3,7 +3,6 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const multer = require('multer');
 const factory = require('./handlerFactory');
-const { object } = require('joi');
 
 //@desc Create new Document
 //POST api/v1/documents
@@ -55,7 +54,7 @@ exports.uploadFile = upload.fields([
 ]);
 
 exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
-	if (!req.files) return next();
+	if (!req.files) return next(new AppError('No file selected'));
 
 	let data = [
 		'resume',
