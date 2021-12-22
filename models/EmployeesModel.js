@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const EmployeesSchema = new mongoose.Schema(
@@ -39,7 +38,6 @@ const EmployeesSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'Joining date must be mentioned'],
 		},
-		
 		promotion_date: {
 			type: String,
 		},
@@ -71,7 +69,7 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Employee must have payroll'],
 		},
 		emergency_contact: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: [mongoose.Schema.Types.ObjectId],
 			ref: 'EmergencyContact',
 			unique: true,
 			required: [true, 'Employee must have emergency contacts'],

@@ -9,23 +9,26 @@ const LeaveManagementSchema = new mongoose.Schema(
 			type: String,
 		},
 		HR_approval: {
-			type:String,
-            enum:["Approved","Unapproved"],
-            default: 'Unapproved',
+			type: String,
+			enum: ['Approved', 'Unapproved'],
+			default: 'Unapproved',
 		},
 		feedback: {
 			type: String,
 		},
-        employee: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Employees",
-            required: [true, "This field is required"],
-        },
-    },
+		employee: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Employees',
+			required: [true, 'This field is required'],
+		},
+	},
 	{
 		timestamps: true,
 	},
 );
 
-const LeaveManagement = mongoose.model('LeaveManagement', LeaveManagementSchema);
+const LeaveManagement = mongoose.model(
+	'LeaveManagement',
+	LeaveManagementSchema,
+);
 module.exports = LeaveManagement;

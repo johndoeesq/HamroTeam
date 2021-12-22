@@ -10,7 +10,7 @@ router
 	.route('/')
 	.get(
 		authController.protect,
-		authController.restrictToBoth('admin'),
+		authController.restrictTo('admin'),
 		allqueryresults(Benefits),
 		benefitsController.getAllBenefits,
 	)

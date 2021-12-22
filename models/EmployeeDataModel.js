@@ -34,14 +34,6 @@ const EmployeeDataSchema = new mongoose.Schema(
 		passport: {
 			type: Number,
 		},
-		annual_leave: {
-			type: Number,
-			
-		},
-		sick_leave: {
-			type: Number,
-			
-		},
 	},
 	{
 		timestamps: true,
