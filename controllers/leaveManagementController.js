@@ -1,3 +1,4 @@
+const Employees = require('../models/EmployeesModel');
 const LeaveManagement = require('../models/LeaveManagementModel');
 const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');
@@ -6,7 +7,19 @@ const factory = require('./handlerFactory');
 //@desc Create new Leave
 //POST api/v1/leaves
 //Private
-exports.createLeaves = factory.createOne(LeaveManagement);
+exports.createLeaves = catchAsync(async (req, res, next) => {
+	const leaveData= await LeaveManagement.findOne({employee:req.employee.id})
+	console.log(leaveData)
+
+	
+	const leave = await LeaveManagement.create(req.body);
+    
+	res.status(201).json({
+		status: 'success',
+		results: leave.length,
+		data: { leave },
+	});
+});
 
 //@desc  get all Leaves
 //GET api/v1/leaves

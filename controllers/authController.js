@@ -50,7 +50,7 @@ exports.login = catchAsync(async (req, res, next) => {
 	}
 
 	const { email, password, employee_number } = req.body;
-	console.log(employee_number);
+
 	// 1) Check if email and password exist
 	if (email) {
 		if (!email || !password) {

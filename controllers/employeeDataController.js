@@ -1,4 +1,4 @@
-const Employee = require('../models/EmployeesModel');
+
 const EmployeeData = require('../models/EmployeeDataModel');
 const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');
@@ -7,15 +7,8 @@ const factory = require('./handlerFactory');
 //@desc Create New Employee Data
 //GET api/v1/employees
 //Private
-exports.createEmployeeData =  catchAsync(async (req, res, next) => {
-	const doc = await EmployeeData.create(req.body);
+exports.createEmployeeData = factory.createOne(EmployeeData);
 
-	res.status(201).json({
-		status: 'success',
-		results: doc.length,
-		data: { doc },
-	});
-});
 //@desc  Get all Employee Data
 //GET api/v1/employeedata
 //Public
