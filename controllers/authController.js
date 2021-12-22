@@ -36,30 +36,40 @@ exports.login = catchAsync(async (req, res, next) => {
 			minDomainSegments: 2,
 			tlds: { allow: ['com', 'net'] },
 		}),
+		employee_number: Joi.string(),
 	});
 
 	const { error } = schema.validate({
 		email: req.body.email,
 		password: req.body.password,
+		employee_number: req.body.employee_number,
 	});
 
 	if (error) {
 		return next(new AppError(`${error.details[0].message}`, 403));
 	}
 
-	const { email, password } = req.body;
-
+	const { email, password, employee_number } = req.body;
+	console.log(employee_number);
 	// 1) Check if email and password exist
-	if (!email || !password) {
-		return next(new AppError('Please provide email and password!', 400));
+	if (email) {
+		if (!email || !password) {
+			return next(new AppError('Please provide email and password!', 400));
+		}
+		employee = await Employee.findOne({ email }).select('+password');
+	} else {
+		if (!employee_number || !password) {
+			return next(new AppError('Please provide the correct credentials'));
+		}
+		employee = await Employee.findOne({ employee_number }).select(
+			'+password',
+		);
 	}
 	// 2) Check if employee exists && password is correct
-	const employee = await Employee.findOne({ email }).select('+password');
 
 	if (!employee || !bcrypt.compareSync(password, employee.password)) {
-		return next(new AppError('Invalid email or password', 401));
+		return next(new AppError('Invalid credentials', 401));
 	}
-
 	if (employee.role === 'admin') {
 		return next(new AppError('Not for admin login', 401));
 	}
@@ -69,19 +79,26 @@ exports.login = catchAsync(async (req, res, next) => {
 
 //Admin Login
 exports.loginAdmin = catchAsync(async (req, res, next) => {
-	const { email, password } = req.body;
+	const { email, password, employee_number } = req.body;
 
-	// 1) Check if email and password exist
-	if (!email || !password) {
-		return next(new AppError('Please provide email and password!', 400));
+	if (email) {
+		if (!email || !password) {
+			return next(new AppError('Please provide email and password!', 400));
+		}
+		employee = await Employee.findOne({ email }).select('+password');
+	} else {
+		if (!employee_number || !password) {
+			return next(new AppError('Please provide the correct credentials'));
+		}
+		employee = await Employee.findOne({ employee_number }).select(
+			'+password',
+		);
 	}
 	// 2) Check if employee exists && password is correct
-	const employee = await Employee.findOne({ email }).select('+password');
 
 	if (!employee || !bcrypt.compareSync(password, employee.password)) {
-		return next(new AppError('Invalid email or password', 401));
+		return next(new AppError('Invalid credentials', 401));
 	}
-
 	if (employee.role === 'employee') {
 		return next(new AppError('Not for employee login', 401));
 	}
