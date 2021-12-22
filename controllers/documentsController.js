@@ -84,6 +84,7 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 });
 
 exports.createDocuments = catchAsync(async (req, res, next) => {
+	console.log(result)
 	const newDocument = await Documents.create(result);
 	res.status(201).json({ status: 'success', data: newDocument });
 });

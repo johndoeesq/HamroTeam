@@ -155,6 +155,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	// GRANT ACCESS TO PROTECTED ROUTE
 
 	req.employee = currentemployee;
+	
 
 	// res.locals.employee = currentemployee;
 	next();
@@ -172,6 +173,7 @@ exports.restrictTo = (...roles) => {
 				),
 			);
 		}
+		
 		next();
 	};
 };
@@ -204,6 +206,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 		);
 	}
 
+	
 	// 2) Generate the random reset token
 	const resetToken = employee.createPasswordResetToken();
 
@@ -276,9 +279,9 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 //For updating the password+
 exports.updatePassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee from collection
-	const employee = await Employee.findById(req.employee.id).select(
-		'+password',
-	);
+	const employee = await employee
+		.findById(req.employee.id)
+		.select('+password');
 
 	// 2) Check if POSTed current password is correct
 	if (
