@@ -97,7 +97,6 @@ const EmployeesSchema = new mongoose.Schema(
 );
 
 EmployeesSchema.pre('save', async function (next) {
-	console.log('Entered');
 	//Only run this function if password was actually modified
 	if (!this.isModified('password')) return next();
 

@@ -138,6 +138,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 	// GRANT ACCESS TO PROTECTED ROUTE
 
 	req.employee = currentemployee;
+	
 
 	// res.locals.employee = currentemployee;
 	next();
@@ -155,6 +156,7 @@ exports.restrictTo = (...roles) => {
 				),
 			);
 		}
+		
 		next();
 	};
 };

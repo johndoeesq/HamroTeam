@@ -3,6 +3,7 @@ const leaveManagementController = require('../controllers/leaveManagementControl
 const allqueryresults = require('../middleware/allqueryresults');
 const LeaveManagement = require('../models/LeaveManagementModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router
 	)
 	.post(
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictTo('employee'),
 		leaveManagementController.createLeaves,
 	);
 
@@ -24,17 +25,20 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-	
+		authController.restrictToBoth('admin', 'employee'),
+		checkEmployeeAccess(LeaveManagement),
 		leaveManagementController.getLeaves,
 	)
 	.put(
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictToBoth('admin', 'employee'),
+		checkEmployeeAccess(LeaveManagement),
 		leaveManagementController.updateLeaves,
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictToBoth('admin', 'employee'),
+		checkEmployeeAccess(LeaveManagement),
 		leaveManagementController.deleteLeaves,
 	);
 

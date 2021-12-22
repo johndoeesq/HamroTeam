@@ -5,13 +5,13 @@ exports.checkEmployeeAccess = (Model) =>
 	catchAsync(async (req, res, next) => {
 	
 		const data = await Model.findById(req.params.id);
-		console.log(data);
 		if (
 			data.id === req.employee.id ||
 			data.id === req.employee.employee_data.toString() ||
 			data.id === req.employee.payroll.toString() ||
 			data.id === req.employee.emergency_contact.toString() ||
 			data.id === req.employee.documents.toString() ||
+			data.employee.toString() == req.employee.id ||
 			req.employee.role == 'admin'
 		) {
 			return next();
