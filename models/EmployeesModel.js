@@ -36,12 +36,12 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Available hours must be mentioned'],
 		},
 		joining_date: {
-			type: String,
+			type: Date,
 			required: [true, 'Joining date must be mentioned'],
 		},
 		
 		promotion_date: {
-			type: String,
+			type: Date,
 		},
 		designation_before_promotion: {
 			type: String,
@@ -85,6 +85,11 @@ const EmployeesSchema = new mongoose.Schema(
 		photo: {
 			type: String,
 			required: [true, 'An employee must have a photo'],
+		},
+
+		remaining_leave_days: {
+			type: Number,
+			default: 30,
 		},
 		passwordChangedAt: Date,
 		passwordResetToken: String,

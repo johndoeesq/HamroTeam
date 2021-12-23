@@ -9,7 +9,7 @@ const LeaveManagementSchema = new mongoose.Schema(
 
 		leave_description: {
 			type: String,
-			require: [true,"A leave must have a description"]
+			required: [true,"A leave must have a description"]
 		},
 
 		HR_approval: {
@@ -25,10 +25,7 @@ const LeaveManagementSchema = new mongoose.Schema(
             ref: "Employees",
             required: [true, "This field is required"],
         },
-		remaining_leave: {
-			type: Number,
-			default:30
-		}
+		
     },
 	{
 		timestamps: true,

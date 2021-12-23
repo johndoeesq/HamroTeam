@@ -10,19 +10,19 @@ const ProjectsSchema = new mongoose.Schema(
 			type: String,
 			enum: ['Past', 'Ongoing', 'Upcoming'],
 			default: 'Ongoing',
-			require: [true, 'status field is required'],
+			required: [true, 'status field is required'],
 		},
 		deadline: {
 			type: String,
-			require: [true, 'deadline field is required'],
+			required: [true, 'deadline field is required'],
 		},
 		progress: {
 			type: String,
-			require: [true, 'progress field is required'],
+			required: [true, 'progress field is required'],
 		},
 		manager: {
 			type: String,
-			require: [true, 'manager field is required'],
+			required: [true, 'manager field is required'],
 		},
 		feedback: {
 			type: String,
@@ -35,7 +35,7 @@ const ProjectsSchema = new mongoose.Schema(
 		},
 		assigned_as: {
             type:String,
-			require: [true,'assigned_as field is required']
+			required: [true,'assigned_as field is required']
 		},
 		}],
 		role: {

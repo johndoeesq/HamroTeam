@@ -4,7 +4,7 @@ const PayrollSchema = new mongoose.Schema(
 	{
 		basic_salary: {
 			type: Number,
-			require: [true, 'An employee must have a salary'],
+			required: [true, 'An employee must have a salary'],
 		},
 		provident_fund: {
 			type: Number,
