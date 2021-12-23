@@ -1,3 +1,4 @@
+const Employees = require('../models/EmployeesModel');
 const LeaveManagement = require('../models/LeaveManagementModel');
 const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');
@@ -6,7 +7,39 @@ const factory = require('./handlerFactory');
 //@desc Create new Leave
 //POST api/v1/leaves
 //Private
-exports.createLeaves = factory.createOne(LeaveManagement);
+exports.createLeaves = catchAsync(async (req, res, next) => {
+	let employee = await Employees.findById(req.employee.id);
+	let date = (employee.joining_date.getMonth() + 1) * 30;
+	let today = (new Date().getMonth() + 1) * 30;
+	let joiningDate = today - date;
+	console.log(date);
+	console.log(today);
+	if (joiningDate > 180) {
+		if (req.body.leave_days >= 6) {
+			remaining_leave_days = {
+				remaining_leave_days:
+					employee.remaining_leave_days - req.body.leave_days,
+			};
+			employee = await Employees.findByIdAndUpdate(
+				req.employee.id,
+				remaining_leave_days,
+				{
+					new: true,
+					runValidators: true,
+				},
+			);
+		}
+	}
+	console.log(employee);
+
+	const leave = await LeaveManagement.create(req.body);
+
+	res.status(201).json({
+		status: 'success',
+		results: leave.length,
+		data: { leave },
+	});
+});
 
 //@desc  get all Leaves
 //GET api/v1/leaves

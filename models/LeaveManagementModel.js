@@ -2,12 +2,16 @@ const mongoose = require('mongoose');
 
 const LeaveManagementSchema = new mongoose.Schema(
 	{
-		leave_start_date: {
-			type: String,
+		leave_days: {
+			type: Number,
+			required: [true, 'Number of leave days must be mentioned'],
 		},
-		leave_end_date: {
+
+		leave_description: {
 			type: String,
+			require: [true, 'A leave must have a description'],
 		},
+
 		HR_approval: {
 			type: String,
 			enum: ['Approved', 'Unapproved'],
