@@ -65,6 +65,7 @@ exports.login = catchAsync(async (req, res, next) => {
 			'+password',
 		);
 	}
+
 	// 2) Check if employee exists && password is correct
 
 	if (!employee || !bcrypt.compareSync(password, employee.password)) {
@@ -155,7 +156,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 	// GRANT ACCESS TO PROTECTED ROUTE
 
 	req.employee = currentemployee;
-	
 
 	// res.locals.employee = currentemployee;
 	next();
@@ -173,28 +173,12 @@ exports.restrictTo = (...roles) => {
 				),
 			);
 		}
-		
+
 		next();
 	};
 };
 
 // Node js express  authentication and authorization middleware
-
-//Route protection to both admin and employee
-exports.restrictToBoth = (...roles) => {
-	return (req, res, next) => {
-		// roles ['admin', 'lead-guide']. role='employee'
-		if (!roles.includes(req.employee.role)) {
-			return next(
-				new AppError(
-					`You do not have permission to perform this action.`,
-					403,
-				),
-			);
-		}
-		next();
-	};
-};
 
 //Forgot Password Email send Section
 exports.forgotPassword = catchAsync(async (req, res, next) => {
@@ -206,7 +190,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 		);
 	}
 
-	
 	// 2) Generate the random reset token
 	const resetToken = employee.createPasswordResetToken();
 

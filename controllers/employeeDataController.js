@@ -1,4 +1,4 @@
-
+const EmergencyContact = require('../models/EmergencyContactModel');
 const EmployeeData = require('../models/EmployeeDataModel');
 const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');

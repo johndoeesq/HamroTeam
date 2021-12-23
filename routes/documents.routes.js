@@ -32,7 +32,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictToBoth('admin', 'employee'),
+		authController.restrictTo('admin', 'employee'),
 		checkEmployeeAccess(Documents),
 		documentsController.getDocuments,
 	)
