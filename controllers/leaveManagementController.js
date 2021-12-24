@@ -12,8 +12,6 @@ exports.createLeaves = catchAsync(async (req, res, next) => {
 	let date = (employee.joining_date.getMonth() + 1) * 30;
 	let today = (new Date().getMonth() + 1) * 30;
 	let joiningDate = today - date;
-	console.log(date);
-	console.log(today);
 	if (joiningDate > 180) {
 		if (req.body.leave_days >= 6) {
 			remaining_leave_days = {
@@ -63,5 +61,37 @@ exports.deleteLeaves = factory.deleteOne(LeaveManagement);
 //Private
 exports.updateLeaves = factory.updateOne(LeaveManagement);
 
+// @desc      Update leave status
+// @route     UPDATE /api/v1/leave/status/:id
+// @access    Private
+exports.approveStatus = catchAsync(async (req, res, next) => {
+	let leave = await LeaveManagement.findById(req.params.id);
 
+	if (!leave) {
+		return next(
+			new ErrorResponse(
+				`No LeaveManagement with the id of ${req.params.id}`,
+				404,
+			),
+		);
+	}
 
+	if (leave.HR_approval == 'Unapproved') {
+		HR_approval = 
+		{
+			HR_approval:'Approved'
+	    }
+
+	leave = await LeaveManagement.findByIdAndUpdate(req.params.id, HR_approval, {
+		new: true,
+		runValidators: true,
+	});
+}
+	// Make sure product belongs to vendor or admin
+	
+
+	res.status(200).json({
+		success: true, 
+		message:"Successfully updated"
+	});
+});

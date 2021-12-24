@@ -34,6 +34,7 @@ router
 		authController.restrictTo('admin', 'employee'),
 		checkEmployeeAccess(LeaveManagement),
 		leaveManagementController.updateLeaves,
+
 	)
 	.delete(
 		authController.protect,
@@ -41,5 +42,10 @@ router
 		checkEmployeeAccess(LeaveManagement),
 		leaveManagementController.deleteLeaves,
 	);
+	router.route('/status/:id').put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		leaveManagementController.approveStatus
+	)
 
 module.exports = router;
