@@ -62,3 +62,6 @@ exports.deleteLeaves = factory.deleteOne(LeaveManagement);
 //PUT api/v1/benefits/:id
 //Private
 exports.updateLeaves = factory.updateOne(LeaveManagement);
+
+
+
