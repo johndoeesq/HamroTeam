@@ -28,4 +28,37 @@ exports.deleteTicket = factory.deleteOne(Ticket);
 //@desc Update Ticket
 //PUT api/v1/ticket/:id
 //Private
-exports.updateTicket = factory.updateOne(Ticket);
+exports.updateTicket = catchAsync(async (req, res, next) => {
+	
+	//To check if the req.body is empty
+	if (Object.keys(req.body).length === 0) {
+		return next(new AppError(`Nothing to update`, 200));
+	}
+	const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+
+	if (!doc) {
+		return next(new AppError('No document found with that ID', 404));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: doc,
+	});
+});
+
+//@desc Update Ticket
+//PUT api/v1/ticket/dismissed/:id
+//Private
+exports.createOne =
+catchAsync(async (req, res, next) => {
+	const ticket = await Ticket.findById(req.params);
+
+	res.status(201).json({
+		status: 'success',
+		results: doc.length,
+		data: { doc },
+	});
+});

@@ -38,4 +38,12 @@ router
 		ticketController.deleteTicket,
 	);
 
+	router
+	.route('/dismissed/status/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		ticketController.dismissTicket,
+	)
+
 module.exports = router;

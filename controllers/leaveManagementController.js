@@ -86,8 +86,7 @@ exports.approveStatus = catchAsync(async (req, res, next) => {
 		new: true,
 		runValidators: true,
 	});
-}
-	// Make sure product belongs to vendor or admin
+	}
 	
 
 	res.status(200).json({
