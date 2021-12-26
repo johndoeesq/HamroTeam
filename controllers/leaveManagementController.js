@@ -28,7 +28,6 @@ exports.createLeaves = catchAsync(async (req, res, next) => {
 			);
 		}
 	}
-	console.log(employee);
 
 	const leave = await LeaveManagement.create(req.body);
 

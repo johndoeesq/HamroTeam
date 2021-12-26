@@ -28,37 +28,54 @@ exports.deleteTicket = factory.deleteOne(Ticket);
 //@desc Update Ticket
 //PUT api/v1/ticket/:id
 //Private
-exports.updateTicket = catchAsync(async (req, res, next) => {
-	
-	//To check if the req.body is empty
-	if (Object.keys(req.body).length === 0) {
-		return next(new AppError(`Nothing to update`, 200));
+exports.updateTicket = factory.updateOne(Ticket);
+
+//@desc Update Ticket handled status
+//PUT api/v1/tickets/handled/status/:id
+//Private
+exports.handleTicket = catchAsync(async (req, res, next) => {
+	let ticket = await Ticket.findById(req.params.id);
+	if (!ticket) {
+		return next(new AppError('No Ticket found with that ID', 404));
 	}
-	const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+
+	if (ticket.handled == false) {
+		handled={
+	    handled : true
+		}
+	}
+	ticket = await Ticket.findByIdAndUpdate(req.params.id, handled, {
 		new: true,
 		runValidators: true,
 	});
 
-	if (!doc) {
-		return next(new AppError('No document found with that ID', 404));
-	}
-
 	res.status(200).json({
 		status: 'success',
-		data: doc,
+		data: ticket,
 	});
 });
 
-//@desc Update Ticket
-//PUT api/v1/ticket/dismissed/:id
+//@desc Update Ticket dismiss status
+//PUT api/v1/ticket/dismiss/status/:id
 //Private
-exports.createOne =
-catchAsync(async (req, res, next) => {
-	const ticket = await Ticket.findById(req.params);
+exports.dismissTicket = catchAsync(async (req, res, next) => {
+	let ticket = await Ticket.findById(req.params.id);
+	if (!ticket) {
+		return next(new AppError('No Ticket found with that ID', 404));
+	}
 
-	res.status(201).json({
+	if (ticket.dismissed == false) {
+		dismissed={
+	    dismissed : true
+		}
+	}
+	ticket = await Ticket.findByIdAndUpdate(req.params.id, dismissed, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json({
 		status: 'success',
-		results: doc.length,
-		data: { doc },
+		data: ticket,
 	});
 });

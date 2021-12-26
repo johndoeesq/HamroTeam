@@ -37,9 +37,16 @@ router
 		authController.restrictTo('admin', 'employee'),
 		ticketController.deleteTicket,
 	);
+router
+	.route('/handle/status/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		ticketController.handleTicket,
+	);
 
 	router
-	.route('/dismissed/status/:id')
+	.route('/dismiss/status/:id')
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
