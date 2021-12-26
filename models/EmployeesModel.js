@@ -47,10 +47,7 @@ const EmployeesSchema = new mongoose.Schema(
 		designation_after_promotion: {
 			type: String,
 		},
-		remaining_leave_days: {
-			type: Number,
-			default: 30,
-		},
+	
 		role: {
 			type: String,
 			enum: ['admin', 'employee'],

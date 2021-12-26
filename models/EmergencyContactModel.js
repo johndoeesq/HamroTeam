@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
-const EmergencyContactSchema = new mongoose.Schema(
-	{
+const EmergencyContactSchema = new mongoose.Schema({
+	
+	emergencycontact: [{
+		
 		contact_name: {
 			type: String,
 			required: [true, 'Name of the contact must have a salary'],
@@ -22,10 +24,12 @@ const EmergencyContactSchema = new mongoose.Schema(
 		email: {
 			type: String,
 		},
-	},
+	}],
+},
 	{
 		timestamps: true,
 	},
+
 );
 
 const EmergencyContact = mongoose.model(

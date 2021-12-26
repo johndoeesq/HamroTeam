@@ -18,15 +18,17 @@ const PayrollSchema = new mongoose.Schema(
 		gross_salary: {
 			type: Number,
 		},
-		bank_acc: {
+		bank:{
+		name: {
 			type: String,
 		},
-		bank_name: {
+		account: {
 			type: String,
 		},
-		bank_branch: {
+		branch: {
 			type: String,
 		},
+	    },
 		benefits: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'benefits',
