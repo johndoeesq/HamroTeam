@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const EmployeesSchema = new mongoose.Schema(
@@ -32,19 +31,15 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Available days must be mentioned'],
 		},
 		available_hours: {
-			type: String,
+			type: Number,
 			required: [true, 'Available hours must be mentioned'],
 		},
-		recruitment_date: {
-			type: String,
-			required: [true, 'Recruitment date must be mentioned'],
-		},
-		hiring_date: {
-			type: String,
-			required: [true, 'Hiring date must be mentioned'],
+		joining_date: {
+			type: Date,
+			required: [true, 'Joining date must be mentioned'],
 		},
 		promotion_date: {
-			type: String,
+			type: Date,
 		},
 		designation_before_promotion: {
 			type: String,
@@ -52,14 +47,24 @@ const EmployeesSchema = new mongoose.Schema(
 		designation_after_promotion: {
 			type: String,
 		},
+		remaining_leave_days: {
+			type: Number,
+			default: 30,
+		},
 		role: {
 			type: String,
-			enum: ['admin', 'project_manager', 'employee'],
+			enum: ['admin', 'employee'],
 			required: [true, 'Role must be assigned'],
+		},
+		type: {
+			type: String,
+			enum: ['freelancing', 'intern', 'fulltime'],
+			required: [true, 'An employee must have a type'],
 		},
 		employee_data: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmployeeData',
+			unique: true,
 			required: [true, 'Employee must have data'],
 		},
 		payroll: {
@@ -68,24 +73,34 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Employee must have payroll'],
 		},
 		emergency_contact: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: [mongoose.Schema.Types.ObjectId],
 			ref: 'EmergencyContact',
+			unique: true,
 			required: [true, 'Employee must have emergency contacts'],
 		},
-    documents: {
+		documents: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Documents',
-			required: [true, 'Employee must have their documents'],
+			unique: true,
+			required: [true, 'Employee must have their'],
+		},
+		photo: {
+			type: String,
+			required: [true, 'An employee must have a photo'],
+		},
+
+		remaining_leave_days: {
+			type: Number,
+			default: 30,
 		},
 		passwordChangedAt: Date,
-		passwordResetToken: Date,
+		passwordResetToken: String,
 		passwordResetExpires: Date,
 	},
 	{ timestamps: true },
 );
 
 EmployeesSchema.pre('save', async function (next) {
-	console.log('Entered');
 	//Only run this function if password was actually modified
 	if (!this.isModified('password')) return next();
 

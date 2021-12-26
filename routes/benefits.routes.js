@@ -9,9 +9,9 @@ const router = express.Router();
 router
 	.route('/')
 	.get(
-		allqueryresults(Benefits),
 		authController.protect,
 		authController.restrictTo('admin'),
+		allqueryresults(Benefits),
 		benefitsController.getAllBenefits,
 	)
 	.post(
@@ -24,7 +24,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictTo('admin'),
 		benefitsController.getBenefits,
 	)
 	.put(

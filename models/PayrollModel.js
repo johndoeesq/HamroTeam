@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const PayrollSchema = new mongoose.Schema(
 	{
-		salary: {
+		basic_salary: {
 			type: Number,
-			require: [true, 'An employee must have a salary'],
+			required: [true, 'An employee must have a salary'],
 		},
 		provident_fund: {
 			type: Number,
@@ -12,15 +12,24 @@ const PayrollSchema = new mongoose.Schema(
 		tax: {
 			type: Number,
 		},
-		company_pf: {
+		allowance: {
 			type: Number,
 		},
-		final_salary: {
+		gross_salary: {
 			type: Number,
+		},
+		bank_acc: {
+			type: String,
+		},
+		bank_name: {
+			type: String,
+		},
+		bank_branch: {
+			type: String,
 		},
 		benefits: {
-			type: mongoose.Schema.ObjectId,
-			ref: 'Benefits',
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'benefits',
 		},
 	},
 	{

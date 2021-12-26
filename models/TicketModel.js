@@ -25,6 +25,9 @@ const TicketSchema = new mongoose.Schema(
 			default: Date.now(),
 			required: [true, 'Urgency must have a time'],
 		},
+		leave_days: {
+			type: Number,
+		},
 		remarks: {
 			type: String,
 		},

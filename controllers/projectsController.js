@@ -6,11 +6,7 @@ const factory = require('./handlerFactory');
 //@desc Create new Project
 //POST api/v1/projects
 //Private
-exports.createProjects = catchAsync(async (req, res, next) => {
-	projects = await Projects.create(req.body);
-	res.status(201).json({ status: 'success', data: projects });
-});
-
+exports.createProjects = factory.createOne(Projects);
 //@desc  get all Projects
 //GET api/v1/projects
 //Public
@@ -21,14 +17,7 @@ exports.getAllProjects = catchAsync(async (req, res, next) => {
 //@desc get single Project
 //GET api/v1/projects/:id
 //Public
-exports.getProjects = catchAsync(async (req, res, next) => {
-	const projects = await Projects.findById(req.params.id);
-
-	if (!projects) {
-		return next(new AppError('No Benefits found with that id', 404));
-	}
-	res.status(200).json({ status: 'success', data: { projects } });
-});
+exports.getProjects = factory.getOne(Projects);
 
 //@desc Delete single Project
 //DELETE api/v1/projects/:id

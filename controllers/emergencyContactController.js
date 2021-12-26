@@ -6,10 +6,7 @@ const factory = require('./handlerFactory');
 //@desc Create new Emergency Contact
 //POST api/v1/emergencycontact
 //Private
-exports.createEmergencyContact = catchAsync(async (req, res, next) => {
-	emergencyContact = await EmergencyContact.create(req.body);
-	res.status(201).json({ status: 'success', data: emergencyContact });
-});
+exports.createEmergencyContact = factory.createOne(EmergencyContact);
 
 //@desc  get all Emergency Contact
 //GET api/v1/emergencycontact
@@ -21,14 +18,7 @@ exports.getAllEmergencyContact = catchAsync(async (req, res, next) => {
 //@desc get single emergency contact
 //GET api/v1/emergencycontact/:id
 //Public
-exports.getEmergencyContact = catchAsync(async (req, res, next) => {
-	const emergencyContact = await EmergencyContact.findById(req.params.id);
-
-	if (!emergencyContact) {
-		return next(new AppError('No EmergencyContact found with that id', 404));
-	}
-	res.status(200).json({ status: 'success', data: { emergencyContact } });
-});
+exports.getEmergencyContact = factory.getOne(EmergencyContact);
 
 //@desc Delete single Emergency Contact
 //DELETE api/v1/emergencycontact/:id

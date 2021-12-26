@@ -3,6 +3,7 @@ const employeeDataController = require('../controllers/employeeDataController');
 const allqueryresults = require('../middleware/allqueryresults');
 const EmployeeData = require('../models/EmployeeDataModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 
 const router = express.Router();
 
@@ -17,8 +18,6 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo('admin'),
-		employeeDataController.uploadEmployeePhoto,
-		employeeDataController.resizeEmployeePhoto,
 		employeeDataController.createEmployeeData,
 	);
 
@@ -27,13 +26,13 @@ router
 	.get(
 		authController.protect,
 		authController.restrictTo('admin', 'employee'),
+		checkEmployeeAccess(EmployeeData),
 		employeeDataController.getEmployeeData,
 	)
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
-		employeeDataController.uploadEmployeePhoto,
-		employeeDataController.resizeEmployeePhoto,
+
 		employeeDataController.updateemployeeData,
 	)
 	.delete(

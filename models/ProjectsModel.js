@@ -4,35 +4,45 @@ const ProjectsSchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			require: [true, 'This field is required'],
+			require: [true, 'name field is required'],
 		},
 		status: {
-			type:String,
-            enum:["Past","Ongoing","Upcoming"],
-            default: 'Ongoing',
-            require: [true, 'This field is required'],
+			type: String,
+			enum: ['Past', 'Ongoing', 'Upcoming'],
+			default: 'Ongoing',
+			required: [true, 'status field is required'],
 		},
 		deadline: {
 			type: String,
-            require: [true, 'This field is required'],
+			required: [true, 'deadline field is required'],
 		},
-		progress :{
+		progress: {
 			type: String,
-            require: [true, 'This field is required'],
-        },
+			required: [true, 'progress field is required'],
+		},
 		manager: {
 			type: String,
-            require: [true, 'This field is required'],
-        },
+			required: [true, 'manager field is required'],
+		},
 		feedback: {
 			type: String,
 		},
-        employees_assigned: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Employees",
-            required: [true, "This field is required"],
-        },
-    },
+		team:[{
+		employees_assigned: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Employees',
+			required: [true, 'employees_assigned field is required'],
+		},
+		assigned_as: {
+            type:String,
+			required: [true,'assigned_as field is required']
+		},
+		}],
+		role: {
+			type: String,
+			enum: ['project_manager', 'project_leader'],
+		},
+	},
 	{
 		timestamps: true,
 	},

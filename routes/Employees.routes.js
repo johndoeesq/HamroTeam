@@ -4,6 +4,7 @@ const allqueryresults = require('../middleware/allqueryresults');
 const router = express.Router();
 const Employee = require('../models/EmployeesModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 
 router
 	.route('/')
@@ -16,6 +17,8 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo('admin'),
+		employeesController.uploadEmployeePhoto,
+		employeesController.resizeEmployeePhoto,
 		employeesController.createEmployees,
 	);
 
@@ -23,12 +26,15 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictTo('admin', 'employee'),
+		checkEmployeeAccess(Employee),
 		employeesController.getEmployee,
 	)
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
+		employeesController.uploadEmployeePhoto,
+		employeesController.resizeEmployeePhoto,
 		employeesController.updateemployee,
 	)
 	.delete(

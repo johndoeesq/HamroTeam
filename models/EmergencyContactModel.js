@@ -4,15 +4,15 @@ const EmergencyContactSchema = new mongoose.Schema(
 	{
 		contact_name: {
 			type: String,
-			require: [true, 'Name of the contact must have a salary'],
+			required: [true, 'Name of the contact must have a salary'],
 		},
 		contact: {
 			type: Number,
-			require: [true, 'Contact number must be given'],
+			required: [true, 'Contact number must be given'],
 		},
 		relation: {
 			type: String,
-			require: [true, 'Relation must be defined'],
+			required: [true, 'Relation must be defined'],
 		},
 		address: {
 			type: String,

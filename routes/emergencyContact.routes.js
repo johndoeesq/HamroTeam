@@ -3,6 +3,7 @@ const emergencyContactController = require('../controllers/emergencyContactContr
 const allqueryresults = require('../middleware/allqueryresults');
 const EmergencyContact = require('../models/EmergencyContactModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeAccess } = require('../middleware/checkEmployeeAccess');
 const router = express.Router();
 
 router
@@ -24,6 +25,7 @@ router
 	.get(
 		authController.protect,
 		authController.restrictTo('admin', 'employee'),
+		checkEmployeeAccess(EmergencyContact),
 		emergencyContactController.getEmergencyContact,
 	)
 	.put(

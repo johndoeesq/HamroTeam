@@ -34,5 +34,5 @@ const BenefitSchema = new mongoose.Schema(
 	},
 );
 
-const Benefits = mongoose.model('Benefits', BenefitSchema);
-module.exports = Benefits;
+const benefits = mongoose.model('benefits', BenefitSchema);
+module.exports = benefits;

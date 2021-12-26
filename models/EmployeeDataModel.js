@@ -31,9 +31,14 @@ const EmployeeDataSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'An employee must have a gender'],
 		},
-		photo: {
-			type: String,
-			required: [true, 'An employee must have a photo'],
+		passport: {
+			type: Number,
+		},
+		annual_leave: {
+			type: Number,
+		},
+		sick_leave: {
+			type: Number,
 		},
 	},
 	{
