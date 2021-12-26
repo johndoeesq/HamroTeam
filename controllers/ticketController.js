@@ -29,3 +29,26 @@ exports.deleteTicket = factory.deleteOne(Ticket);
 //PUT api/v1/ticket/:id
 //Private
 exports.updateTicket = factory.updateOne(Ticket);
+
+//@desc Update Ticket handled status
+//PUT api/v1/ticket/handled/status/:id
+//Private
+exports.handleTicket = catchAsync(async (req, res, next) => {
+	let ticket = await Ticket.findById(req.params);
+	if (!ticket) {
+		return next(new AppError('No Ticket found with that ID', 404));
+	}
+
+	if (ticket.handled == false) {
+		ticket.handled = true;
+	}
+	ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json({
+		status: 'success',
+		data: ticket,
+	});
+});

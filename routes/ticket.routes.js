@@ -37,5 +37,12 @@ router
 		authController.restrictTo('admin', 'employee'),
 		ticketController.deleteTicket,
 	);
+router
+	.route('/handled/status/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		ticketController.handleTicket,
+	);
 
 module.exports = router;

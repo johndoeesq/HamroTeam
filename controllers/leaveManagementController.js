@@ -28,7 +28,6 @@ exports.createLeaves = catchAsync(async (req, res, next) => {
 			);
 		}
 	}
-	console.log(employee);
 
 	const leave = await LeaveManagement.create(req.body);
 
@@ -64,7 +63,7 @@ exports.updateLeaves = factory.updateOne(LeaveManagement);
 // @desc      Update leave status
 // @route     UPDATE /api/v1/leave/status/:id
 // @access    Private
-exports.reviewStatus = asyncHandler(async (req, res, next) => {
+exports.reviewStatus = catchAsync(async (req, res, next) => {
 	let leave = await LeaveManagement.findById(req.params.id);
 
 	if (!leave) {
