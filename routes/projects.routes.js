@@ -3,6 +3,8 @@ const projectsController = require('../controllers/projectsController');
 const allqueryresults = require('../middleware/allqueryresults');
 const Projects = require('../models/ProjectsModel');
 const authController = require('../controllers/authController');
+const { checkEmployeeProjectAccess } = require('../middleware/checkEmployeeAccess');
+
 
 const router = express.Router();
 
@@ -25,6 +27,7 @@ router
 	.get(
 		authController.protect,
 		authController.restrictTo('admin', 'employee'),
+		checkEmployeeProjectAccess(Projects),
 		projectsController.getProjects,
 	)
 	.put(

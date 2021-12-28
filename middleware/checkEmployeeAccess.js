@@ -3,17 +3,12 @@ const AppError = require('../utils/appError');
 
 exports.checkEmployeeAccess = (Model) =>
 	catchAsync(async (req, res, next) => {
-	    console.log(req.params.id)
-		console.log(Model)
 		const data = await Model.findById(req.params.id);
-		console.log(data)
 		if(!data){
 			return next (new AppError("No data found with that id",404))
 		}
 		
-		
-			console.log(data.employee.toString())
-			console.log(req.employee.id.toString())
+		else{
 			if(
 			data.id === req.employee.id ||
 			data.id === req.employee.employee_data.toString() ||
@@ -27,7 +22,7 @@ exports.checkEmployeeAccess = (Model) =>
 			return next(
 				new AppError('Sorry!You are forbiddden to view this content', 403),
 			);
-		}
+		}}
 	}
 	);
 
@@ -53,5 +48,34 @@ exports.checkEmployeeAccess = (Model) =>
 			);
 		}
 	}
+	});
+
+	exports.checkEmployeeProjectAccess = (Model) =>
+	catchAsync(async (req, res, next) => {
+		const data = await Model.findById(req.params.id);
+		console.log(data)
+		if(!data){
+			return next (new AppError("No data found with that id",404))
+		}
+		
+		else {
+			console.log(req.employee.id)
+			let value=false
+			data.team.map(item=>{
+				
+			   if (req.employee.id == item.employees_assigned.toString() || req.employee.role=="admin"){
+			            value= true
+						
+			   }
+			})
+			
+			if(value === true){
+				return next();
+			}
+			else{
+				return next (new AppError("Sorry!You are not assigned to this project!"));
+			}
+			
+		} 
 	});
 
