@@ -70,7 +70,7 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Employee must have payroll'],
 		},
 		emergency_contact: {
-			type: [mongoose.Schema.Types.ObjectId],
+			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmergencyContact',
 			unique: true,
 			required: [true, 'Employee must have emergency contacts'],
