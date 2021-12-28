@@ -3,7 +3,6 @@ const AppError = require('../utils/appError');
 
 exports.checkEmployeeAccess = (Model) =>
 	catchAsync(async (req, res, next) => {
-	
 		const data = await Model.findById(req.params.id);
 		if (
 			data.id === req.employee.id ||

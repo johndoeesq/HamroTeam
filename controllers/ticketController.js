@@ -34,13 +34,15 @@ exports.updateTicket = factory.updateOne(Ticket);
 //PUT api/v1/ticket/handled/status/:id
 //Private
 exports.handleTicket = catchAsync(async (req, res, next) => {
-	let ticket = await Ticket.findById(req.params);
+	let ticket = await Ticket.findById(req.params.id);
 	if (!ticket) {
 		return next(new AppError('No Ticket found with that ID', 404));
 	}
 
 	if (ticket.handled == false) {
-		ticket.handled = true;
+		handled = {
+			handled: true,
+		};
 	}
 	ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
