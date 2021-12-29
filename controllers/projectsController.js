@@ -28,3 +28,34 @@ exports.deleteProjects = factory.deleteOne(Projects);
 //PUT api/v1/projects/:id
 //Private
 exports.updateProjects = factory.updateOne(Projects);
+
+//@desc Update Project Status
+//PUT api/v1/projects/status/:id
+//Private
+exports.updateProjectStatus = catchAsync(async (req, res, next) => {
+	let projects = await Projects.findById(req.params.id);
+
+	if (!projects) {
+		return next(new AppError('No project found with that ID', 404));
+	}
+
+	if (projects.project_status == 'Ongoing') {
+		project_status = {
+			project_status: 'Past',
+		};
+		projects = await Projects.findByIdAndUpdate(
+			req.params.id,
+			project_status,
+			{
+				new: true,
+				runValidators: true,
+			},
+		);
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: projects,
+		message: 'Successfully updated the status',
+	});
+});

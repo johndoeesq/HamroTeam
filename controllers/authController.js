@@ -178,8 +178,6 @@ exports.restrictTo = (...roles) => {
 	};
 };
 
-// Node js express  authentication and authorization middleware
-
 //Forgot Password Email send Section
 exports.forgotPassword = catchAsync(async (req, res, next) => {
 	// 1) Get employee based on POSTed email

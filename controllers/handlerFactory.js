@@ -19,7 +19,6 @@ exports.deleteOne = (Model) =>
 //Update single document
 exports.updateOne = (Model) =>
 	catchAsync(async (req, res, next) => {
-	
 		//To check if the req.body is empty
 		if (Object.keys(req.body).length === 0) {
 			return next(new AppError(`Nothing to update`, 200));

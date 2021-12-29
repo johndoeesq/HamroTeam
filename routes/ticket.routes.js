@@ -29,7 +29,7 @@ router
 	)
 	.put(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictTo('employee'),
 		ticketController.updateTicket,
 	)
 	.delete(
@@ -45,12 +45,12 @@ router
 		ticketController.handleTicket,
 	);
 
-	router
+router
 	.route('/dismiss/status/:id')
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
 		ticketController.dismissTicket,
-	)
+	);
 
 module.exports = router;
