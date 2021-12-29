@@ -25,7 +25,7 @@ const LeaveManagementSchema = new mongoose.Schema(
 			ref: 'Employees',
 			required: [true, 'This field is required'],
 		},
-	},
+	}, 
 	{
 		timestamps: true,
 	},

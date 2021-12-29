@@ -1,31 +1,32 @@
 const mongoose = require('mongoose');
 
-const EmergencyContactSchema = new mongoose.Schema(
-	{
+const EmergencyContactSchema = new mongoose.Schema({
 		contact_name: {
 			type: String,
-			require: [true, 'Name of the contact must have a salary'],
+			required: [true, 'Emergency contact must have a name'],
 		},
 		contact: {
 			type: Number,
-			require: [true, 'Contact number must be given'],
+			required: [true, 'Emergency contact must have a contact number'],
 		},
 		relation: {
 			type: String,
-			require: [true, 'Relation must be defined'],
+			required: [true, 'Relation to emergency contact must be mentioned'],
 		},
 		address: {
 			type: String,
-			required: [true, 'Address must be given'],
+			required: [true, 'Emergency contact address must be given'],
 		},
 
 		email: {
 			type: String,
 		},
 	},
+
 	{
 		timestamps: true,
 	},
+
 );
 
 const EmergencyContact = mongoose.model(

@@ -47,10 +47,7 @@ const EmployeesSchema = new mongoose.Schema(
 		designation_after_promotion: {
 			type: String,
 		},
-		remaining_leave_days: {
-			type: Number,
-			default: 30,
-		},
+	
 		role: {
 			type: String,
 			enum: ['admin', 'employee'],
@@ -73,7 +70,7 @@ const EmployeesSchema = new mongoose.Schema(
 			required: [true, 'Employee must have payroll'],
 		},
 		emergency_contact: {
-			type: [mongoose.Schema.Types.ObjectId],
+			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmergencyContact',
 			unique: true,
 			required: [true, 'Employee must have emergency contacts'],
@@ -87,6 +84,11 @@ const EmployeesSchema = new mongoose.Schema(
 		photo: {
 			type: String,
 			required: [true, 'An employee must have a photo'],
+		},
+
+		remaining_leave_days: {
+			type: Number,
+			default: 30,
 		},
 		passwordChangedAt: Date,
 		passwordResetToken: String,

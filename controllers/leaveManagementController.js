@@ -63,7 +63,7 @@ exports.updateLeaves = factory.updateOne(LeaveManagement);
 // @desc      Update leave status
 // @route     UPDATE /api/v1/leave/status/:id
 // @access    Private
-exports.reviewStatus = catchAsync(async (req, res, next) => {
+exports.approveStatus = catchAsync(async (req, res, next) => {
 	let leave = await LeaveManagement.findById(req.params.id);
 
 	if (!leave) {
@@ -75,18 +75,21 @@ exports.reviewStatus = catchAsync(async (req, res, next) => {
 		);
 	}
 
-	if (leave.status == 'unapproved') {
-		leave.status = 'Approved';
-	}
+	if (leave.HR_approval == 'Unapproved') {
+		HR_approval = 
+		{
+			HR_approval:'Approved'
+	    }
 
-	// Make sure product belongs to vendor or admin
-	leave = await LeaveMangement.findByIdAndUpdate(req.params.id, req.body, {
+	leave = await LeaveManagement.findByIdAndUpdate(req.params.id, HR_approval, {
 		new: true,
 		runValidators: true,
 	});
+	}
+	
 
 	res.status(200).json({
-		success: true,
-		data: leave,
+		success: true, 
+		message:"Successfully updated"
 	});
 });

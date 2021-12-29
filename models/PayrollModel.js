@@ -4,7 +4,7 @@ const PayrollSchema = new mongoose.Schema(
 	{
 		basic_salary: {
 			type: Number,
-			require: [true, 'An employee must have a salary'],
+			required: [true, 'An employee must have a salary'],
 		},
 		provident_fund: {
 			type: Number,
@@ -18,15 +18,17 @@ const PayrollSchema = new mongoose.Schema(
 		gross_salary: {
 			type: Number,
 		},
-		bank_acc: {
+		bank:{
+		name: {
 			type: String,
 		},
-		bank_name: {
+		account: {
 			type: String,
 		},
-		bank_branch: {
+		branch: {
 			type: String,
 		},
+	    },
 		benefits: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'benefits',

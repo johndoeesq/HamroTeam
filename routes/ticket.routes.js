@@ -38,11 +38,19 @@ router
 		ticketController.deleteTicket,
 	);
 router
-	.route('/handled/status/:id')
+	.route('/handle/status/:id')
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
 		ticketController.handleTicket,
 	);
+
+	router
+	.route('/dismiss/status/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		ticketController.dismissTicket,
+	)
 
 module.exports = router;
