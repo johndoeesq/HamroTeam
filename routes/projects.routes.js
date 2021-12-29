@@ -43,11 +43,19 @@ router
 	);
 
 router
-	.route('/status/:id')
+	.route('/Ongoingstatus/:id')
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
 		projectsController.updateProjectStatus,
+	);
+
+router
+	.route('/Upcomingstatus/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		projectsController.updateProjectAnotherStatus,
 	);
 
 module.exports = router;
