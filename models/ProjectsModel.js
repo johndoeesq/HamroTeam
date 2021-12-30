@@ -27,17 +27,19 @@ const ProjectsSchema = new mongoose.Schema(
 		feedback: {
 			type: String,
 		},
-		team:[{
-		employees_assigned: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Employees',
-			required: [true, 'employees_assigned field is required'],
-		},
-		assigned_as: {
-            type:String,
-			required: [true,'assigned_as field is required']
-		},
-		}],
+		team: [
+			{
+				employees_assigned: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: 'Employees',
+					required: [true, 'employees_assigned field is required'],
+				},
+				assigned_as: {
+					type: String,
+					required: [true, 'assigned_as field is required'],
+				},
+			},
+		],
 		role: {
 			type: String,
 			enum: ['project_manager', 'project_leader'],

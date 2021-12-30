@@ -40,9 +40,9 @@ exports.handleTicket = catchAsync(async (req, res, next) => {
 	}
 
 	if (ticket.handled == false) {
-		handled={
-	    handled : true
-		}
+		handled = {
+			handled: true,
+		};
 	}
 	ticket = await Ticket.findByIdAndUpdate(req.params.id, handled, {
 		new: true,
@@ -65,9 +65,9 @@ exports.dismissTicket = catchAsync(async (req, res, next) => {
 	}
 
 	if (ticket.dismissed == false) {
-		dismissed={
-	    dismissed : true
-		}
+		dismissed = {
+			dismissed: true,
+		};
 	}
 	ticket = await Ticket.findByIdAndUpdate(req.params.id, dismissed, {
 		new: true,

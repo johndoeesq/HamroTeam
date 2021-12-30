@@ -3,8 +3,9 @@ const projectsController = require('../controllers/projectsController');
 const allqueryresults = require('../middleware/allqueryresults');
 const Projects = require('../models/ProjectsModel');
 const authController = require('../controllers/authController');
-const { checkEmployeeProjectAccess } = require('../middleware/checkEmployeeAccess');
-
+const {
+	checkEmployeeProjectAccess,
+} = require('../middleware/checkEmployeeAccess');
 
 const router = express.Router();
 
@@ -39,6 +40,22 @@ router
 		authController.protect,
 		authController.restrictTo('admin'),
 		projectsController.deleteProjects,
+	);
+
+router
+	.route('/Ongoingstatus/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		projectsController.updateProjectStatus,
+	);
+
+router
+	.route('/Upcomingstatus/:id')
+	.put(
+		authController.protect,
+		authController.restrictTo('admin'),
+		projectsController.updateProjectAnotherStatus,
 	);
 
 module.exports = router;
