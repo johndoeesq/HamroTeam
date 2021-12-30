@@ -53,18 +53,17 @@ exports.checkEmployeeAccess = (Model) =>
 	exports.checkEmployeeProjectAccess = (Model) =>
 	catchAsync(async (req, res, next) => {
 		const data = await Model.findById(req.params.id);
-		console.log(data)
+
 		if(!data){
 			return next (new AppError("No data found with that id",404))
 		}
 		
 		else {
-			console.log(req.employee.id)
-			let value=false
-			data.team.map(item=>{
+			let value = false
+			data.team.map(item => {
 				
-			   if (req.employee.id == item.employees_assigned.toString() || req.employee.role=="admin"){
-			            value= true
+			   if (req.employee.id == item.employees_assigned.toString() || req.employee.role == "admin"){
+			            value = true
 						
 			   }
 			})

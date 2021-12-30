@@ -6,7 +6,7 @@ const ProjectsSchema = new mongoose.Schema(
 			type: String,
 			require: [true, 'name field is required'],
 		},
-		status: {
+		project_status: {
 			type: String,
 			enum: ['Past', 'Ongoing', 'Upcoming'],
 			default: 'Ongoing',
