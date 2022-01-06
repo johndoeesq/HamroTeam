@@ -68,7 +68,7 @@ const EmployeesSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Payroll',
 			required: [true, 'Employee must have payroll'],
-		},
+},		
 		emergency_contact: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'EmergencyContact',
