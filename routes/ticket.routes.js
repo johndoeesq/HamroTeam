@@ -45,7 +45,7 @@ router
 		ticketController.handleTicket,
 	);
 
-router
+router 
 	.route('/dismiss/status/:id')
 	.put(
 		authController.protect,

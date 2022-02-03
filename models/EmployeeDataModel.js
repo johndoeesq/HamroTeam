@@ -6,7 +6,7 @@ const EmployeeDataSchema = new mongoose.Schema(
 			require: [true, 'An employee must have a name'],
 		},
 		DOB: {
-			type: String,
+			type: Date,
 			required: [true, 'An employee must have a date of birth'],
 		},
 		address: {
