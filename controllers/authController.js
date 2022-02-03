@@ -231,8 +231,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 		.update(req.params.token)
 		.digest('hex');
 
-
-
 	const employee = await Employee.findOne({
 		passwordResetToken: hashedToken,
 		passwordResetExpires: { $gt: Date.now() },
