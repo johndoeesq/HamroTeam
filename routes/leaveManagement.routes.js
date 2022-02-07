@@ -54,4 +54,12 @@ router
     leaveManagementController.approveStatus
   );
 
+router
+  .route("/feedback/:id")
+  .put(
+    authController.protect,
+    authController.restrictTo("admin"),
+    leaveManagementController.leaveFeedback
+  );
+
 module.exports = router;
