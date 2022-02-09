@@ -1,86 +1,104 @@
-const Employees = require("../models/EmployeesModel");
-const AppError = require("../utils/appError");
-const catchAsync = require("../utils/catchAsync");
-const factory = require("./handlerFactory");
-const multer = require("multer");
-const sharp = require("sharp");
-const Documents = require("../models/DocumentsModel");
-// const EmployeeData = require('../models/EmployeeDataModel');
-const Payroll = require("../models/PayrollModel");
-const EmergencyContact = require("../models/EmergencyContactModel");
+const Employees = require('../models/EmployeesModel');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
+const factory = require('./handlerFactory');
+const multer = require('multer');
 
 //@desc Create new Employee Data
 //POST api/v1/employeedata
 //Private
 
-const multerStorage = multer.memoryStorage();
+const multerStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		// setting destination of uploading files
+		if (file.mimetype.startsWith('application')) {
+			// if uploading pdf/word
+			cb(null, 'public/files/');
+		} else {
+			// else uploading image
+			cb(null, 'public/photos/');
+		}
+	},
+	filename: (req, file, cb) => {
+		// naming file
+		cb(null, file.fieldname + '-' + file.originalname);
+	},
+});
 
 const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb(new AppError("Not an image! Please upload only images.", 400), false);
-  }
+	if (file.mimetype.startsWith('application')) {
+		// check file type to be pdf, doc, or docx
+		cb(null, true);
+	}
+	// else uploading image
+	else if (file.mimetype.startsWith('image')) {
+		// check file type to be an image
+		cb(null, true);
+	} else {
+		cb(null, false); // else fails
+	}
 };
 
 const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
+	storage: multerStorage,
+	fileFilter: multerFilter,
 });
 
-exports.uploadEmployeePhoto = upload.single("photo");
+exports.uploadFile = upload.fields([
+	{ name: 'resume', maxCount: 1 },
+	{ name: 'citizenship', maxCount: 1 },
+	{ name: 'PAN', maxCount: 1 },
+	{ name: 'photo', maxCount: 1 },
+	{ name: 'offerletter', maxCount: 1 },
+	{ name: 'contract', maxCount: 1 },
+]);
 
-exports.resizeEmployeePhoto = catchAsync(async (req, res, next) => {
-  if (!req.file) return next();
+exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
+	if (!req.files) return next(new AppError('No file selected'));
 
-  req.file.filename = `employee-${Date.now()}.jpeg`;
+	let data = [
+		'resume',
+		'citizenship',
+		'PAN',
+		'photo',
+		'offerletter',
+		'contract',
+	];
+	let val = [];
+	data.map((item) => {
+		if (!req.files[item]) {
+			return;
+		}
+		req.body.item = `${req.protocol}://${req.get(
+			'host',
+		)}/files/${`document_${Date.now()}-${req.files[item][0].originalname}`}`;
 
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`public/employee/${req.file.filename}`);
+		val.push([item, req.body.item]);
+	});
 
-  req.body.photo = `${req.protocol}://${req.get("host")}/employee/${
-    req.file.filename
-  }`;
+	result = Object.fromEntries(val);
 
-  next();
+	next();
 });
 
 exports.createEmployees = catchAsync(async (req, res, next) => {
-  // const employeeData = await EmployeeData.findById(req.body.employee_data);
-  // if (!employeeData) {
-  // 	return next(new AppError('No employeeData found with that id', 404));
-  // }
-  const documents = await Documents.findById(req.body.documents);
-  if (!documents) {
-    return next(new AppError("No documents found with that id", 404));
-  }
-  const payroll = await Payroll.findById(req.body.payroll);
-  if (!payroll) {
-    return next(new AppError("No payroll found with that id", 404));
-  }
-
-  const emergencyContact = await EmergencyContact.findById(
-    req.body.emergency_contact
-  );
-  if (!emergencyContact) {
-    return next(new AppError("No emergencyContact found with that id", 404));
-  }
-
-  const employee = await Employees.create(req.body);
-  res.status(200).json({
-    status: "success",
-    data: employee,
-  });
+	let data = {
+		...req.body,
+		...result,
+	};
+	console.log(data);
+	const employee = await Employees.create(data);
+	res.status(200).json({
+		status: 'success',
+		data: employee,
+	});
 });
 
 //@desc Get All Employees
 //GET api/v1/employees
 //Public
 exports.getAllEmployees = catchAsync(async (req, res, next) => {
-  res.status(200).json(res.allqueryresults);
+	res.status(200).json(res.allqueryresults);
 });
 
 //@desc Get Single Employee

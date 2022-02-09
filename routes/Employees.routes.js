@@ -10,15 +10,15 @@ router
 	.route('/')
 	.get(
 		allqueryresults(Employee),
-		authController.protect,
-		authController.restrictTo('admin'),
+		//authController.protect,
+		//authController.restrictTo('admin'),
 		employeesController.getAllEmployees,
 	)
 	.post(
-		authController.protect,
-		authController.restrictTo('admin'),
-		employeesController.uploadEmployeePhoto,
-		employeesController.resizeEmployeePhoto,
+		//authController.protect,
+		//authController.restrictTo('admin'),
+		employeesController.uploadFile,
+		employeesController.resizeDocumentsPhoto,
 		employeesController.createEmployees,
 	);
 
@@ -33,13 +33,13 @@ router
 	.put(
 		authController.protect,
 		authController.restrictTo('admin'),
-		employeesController.uploadEmployeePhoto,
-		employeesController.resizeEmployeePhoto,
+		employeesController.uploadFile,
+		employeesController.resizeDocumentsPhoto,
 		employeesController.updateemployee,
 	)
 	.delete(
-		authController.protect,
-		authController.restrictTo('admin'),
+		//authController.protect,
+		//authController.restrictTo('admin'),
 		employeesController.deleteemployee,
 	);
 
