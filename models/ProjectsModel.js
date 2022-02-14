@@ -22,8 +22,9 @@ const ProjectsSchema = new mongoose.Schema(
       required: [true, "progress field is required"],
     },
     manager: {
-      type: String,
-      required: [true, "manager field is required"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employees",
+      required: [true, "Manager field is required"],
     },
     feedback: {
       type: String,
