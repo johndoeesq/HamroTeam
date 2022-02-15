@@ -24,10 +24,7 @@ const ProjectsSchema = new mongoose.Schema(
     manager: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employees",
-      required: [true, "Manager field is required"],
-    },
-    feedback: {
-      type: String,
+      required: [true, "Project Manager must be assigned"],
     },
     team: [
       {
@@ -42,9 +39,10 @@ const ProjectsSchema = new mongoose.Schema(
         },
       },
     ],
-    role: {
-      type: String,
-      enum: ["project_manager", "project_leader"],
+    project_leader: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employees",
+      required: [true, "Project Leader must be assigned"],
     },
   },
   {
