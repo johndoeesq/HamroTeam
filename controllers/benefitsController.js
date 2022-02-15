@@ -1,5 +1,4 @@
 const Benefits = require('../models/BenefitsModel');
-const AppError = require('../utils/appError.js');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 

@@ -65,16 +65,26 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 		'contract',
 	];
 	let val = [];
-	data.map((item) => {
-		if (!req.files[item]) {
-			return;
-		}
-		req.body.item = `${req.protocol}://${req.get(
-			'host',
-		)}/files/${`document_${Date.now()}-${req.files[item][0].originalname}`}`;
+	await Promise.all(
+		data.map((item) => {
+			if (!req.files[item]) {
+				return;
+			}
+			filename = req.files[item][0].originalname.replace(' ', '-');
 
-		val.push([item, req.body.item]);
-	});
+			if (req.files[item][0].mimetype.startsWith('application')) {
+				req.body.item = `${req.protocol}://${req.get(
+					'host',
+				)}/files/${`document_${Date.now()}-${filename}`}`;
+			} else {
+				req.body.item = `${req.protocol}://${req.get(
+					'host',
+				)}/photos/${`document_${Date.now()}-${filename}`}`;
+			}
+
+			val.push([item, req.body.item]);
+		}),
+	);
 
 	result = Object.fromEntries(val);
 

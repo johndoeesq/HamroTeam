@@ -10,13 +10,13 @@ router
 	.route('/')
 	.get(
 		allqueryresults(Employee),
-		//authController.protect,
-		//authController.restrictTo('admin'),
+		authController.protect,
+		authController.restrictTo('admin'),
 		employeesController.getAllEmployees,
 	)
 	.post(
-		//authController.protect,
-		//authController.restrictTo('admin'),
+		authController.protect,
+		authController.restrictTo('admin'),
 		employeesController.uploadFile,
 		employeesController.resizeDocumentsPhoto,
 		employeesController.createEmployees,
@@ -38,8 +38,8 @@ router
 		employeesController.updateemployee,
 	)
 	.delete(
-		//authController.protect,
-		//authController.restrictTo('admin'),
+		authController.protect,
+		authController.restrictTo('admin'),
 		employeesController.deleteemployee,
 	);
 

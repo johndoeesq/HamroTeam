@@ -50,8 +50,9 @@ const EmployeesSchema = new mongoose.Schema(
 
 		role: {
 			type: String,
-			enum: ['admin', 'employee'],
+			enum: ['admin', 'employee', 'HR'],
 			required: [true, 'Role must be assigned'],
+			default: 'employee',
 		},
 		type: {
 			type: String,
@@ -78,7 +79,7 @@ const EmployeesSchema = new mongoose.Schema(
 		phone: {
 			type: Number,
 			required: [true, 'An employee must have a phone number'],
-			unique: true,
+			unique: [true, ' A phone number must be unique'],
 		},
 
 		blood_group: {
@@ -89,67 +90,14 @@ const EmployeesSchema = new mongoose.Schema(
 			type: String,
 			required: [true, 'An employee must have a gender'],
 		},
-		passport: {
-			type: Number,
-		},
+
 		annual_leave: {
 			type: Number,
 		},
 		sick_leave: {
 			type: Number,
 		},
-		basic_salary: {
-			type: Number,
-			required: [true, 'An employee must have a salary'],
-		},
-		provident_fund: {
-			type: Number,
-		},
-		tax: {
-			type: Number,
-		},
-		allowance: {
-			type: Number,
-		},
-		gross_salary: {
-			type: Number,
-		},
-		bank: {
-			name: {
-				type: String,
-			},
-			account: {
-				type: String,
-			},
-			branch: {
-				type: String,
-			},
-		},
-		accomodation: {
-			type: String,
-		},
-		transport: {
-			type: String,
-		},
-		gadgets: {
-			type: [String],
-		},
-		house_rent: {
-			type: Number,
-		},
-		insurance: {
-			type: Boolean,
-			default: false,
-		},
-		transport_fare: {
-			type: Number,
-		},
-		lunch_fare: {
-			type: Number,
-		},
-		miscellaneous_fare: {
-			type: Number,
-		},
+
 		contact_name: {
 			type: String,
 			required: [true, 'Emergency contact must have a name'],
@@ -169,19 +117,16 @@ const EmployeesSchema = new mongoose.Schema(
 
 		resume: {
 			type: String,
-			//required: [true, 'Resume of an employee is required'],
+			required: [true, 'Resume of an employee is required'],
 		},
 		citizenship: {
 			type: String,
-			//required: [true, 'Citizenship of an employee is required'],
+			required: [true, 'Citizenship of an employee is required'],
 		},
 
-		PAN: {
-			type: String,
-		},
 		photo: {
 			type: String,
-			//	required: [true, 'Photo of an employee is required'],
+			required: [true, 'Photo of an employee is required'],
 		},
 
 		offerletter: {
@@ -250,8 +195,6 @@ EmployeesSchema.methods.createPasswordResetToken = function () {
 		.createHash('sha256')
 		.update(resetToken)
 		.digest('hex');
-
-	// console.log({ resetToken }, this.passwordResetToken);
 
 	this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
