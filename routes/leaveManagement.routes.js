@@ -30,7 +30,7 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictTo('admin', 'employee', 'HR'),
 		checkEmployeeLeaveAccess(LeaveManagement),
 		leaveManagementController.getLeaves,
 	)

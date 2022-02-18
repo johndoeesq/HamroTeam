@@ -8,6 +8,9 @@ const multer = require('multer');
 //POST api/v1/employeedata
 //Private
 
+/*Issue is that the images and files have different names whereas the file in the database 
+have different name so solve that issue on Sunday*/
+
 const multerStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		// setting destination of uploading files
@@ -21,7 +24,7 @@ const multerStorage = multer.diskStorage({
 	},
 	filename: (req, file, cb) => {
 		// naming file
-		cb(null, file.fieldname + '-' + file.originalname);
+		cb(null, `document_${Date.now()}-${file.originalname}`);
 	},
 });
 
@@ -70,7 +73,7 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 			if (!req.files[item]) {
 				return;
 			}
-			filename = req.files[item][0].originalname.replace(' ', '-');
+			filename = req.files[item][0].originalname;
 
 			if (req.files[item][0].mimetype.startsWith('application')) {
 				req.body.item = `${req.protocol}://${req.get(
@@ -96,7 +99,7 @@ exports.createEmployees = catchAsync(async (req, res, next) => {
 		...req.body,
 		...result,
 	};
-	console.log(data);
+
 	const employee = await Employees.create(data);
 	res.status(200).json({
 		status: 'success',
@@ -121,7 +124,25 @@ exports.getEmployee = factory.getOne(Employees);
 //Private
 exports.deleteemployee = factory.deleteOne(Employees);
 
-//@desc Update Single Employee
+//@desc Update Single Employees
 //PUT api/v1/employeedata/:id
 //Private
-exports.updateemployee = factory.updateOne(Employees);
+exports.updateemployee = catchAsync(async (req, res, next) => {
+	let employee = await Employees.findById(req.params.id);
+	if (!employee) {
+		return next(new AppError('No document found with that Id', 404));
+	}
+	let data = {
+		...req.body,
+		...result,
+	};
+
+	employee = await Employees.findByIdAndUpdate(req.params.id, data, {
+		new: true,
+		runValidators: true,
+	});
+	res.status(200).json({
+		status: 'success',
+		data: employee,
+	});
+});

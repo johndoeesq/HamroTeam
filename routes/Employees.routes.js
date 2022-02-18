@@ -11,12 +11,12 @@ router
 	.get(
 		allqueryresults(Employee),
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictTo('admin', 'HR'),
 		employeesController.getAllEmployees,
 	)
 	.post(
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictTo('admin', 'HR'),
 		employeesController.uploadFile,
 		employeesController.resizeDocumentsPhoto,
 		employeesController.createEmployees,
@@ -26,13 +26,13 @@ router
 	.route('/:id')
 	.get(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictTo('admin', 'employee', 'HR'),
 		checkEmployeeAccess(Employee),
 		employeesController.getEmployee,
 	)
 	.put(
 		authController.protect,
-		authController.restrictTo('admin'),
+		authController.restrictTo('admin', 'HR'),
 		employeesController.uploadFile,
 		employeesController.resizeDocumentsPhoto,
 		employeesController.updateemployee,

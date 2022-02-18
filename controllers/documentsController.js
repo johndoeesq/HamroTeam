@@ -71,9 +71,7 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 		}
 		req.body.item = `${req.protocol}://${req.get(
 			'host',
-		)}/public/files/${`document_${Date.now()}-${
-			req.files[item][0].originalname
-		}`}`;
+		)}/files/${`document_${Date.now()}-${req.files[item][0].originalname}`}`;
 
 		val.push([item, req.body.item]);
 	});
@@ -84,7 +82,6 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 });
 
 exports.createDocuments = catchAsync(async (req, res, next) => {
-
 	const newDocument = await Documents.create(result);
 	res.status(201).json({ status: 'success', data: newDocument });
 });

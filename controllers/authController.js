@@ -1,10 +1,10 @@
 const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const Employee = require('./../models/EmployeesModel');
+const Employee = require('../models/EmployeesModel');
 const Token = require('../models/tokenModel.js');
-const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const sendEmail = require('../utils/email');
@@ -71,42 +71,39 @@ exports.login = catchAsync(async (req, res, next) => {
 	if (!employee || !bcrypt.compareSync(password, employee.password)) {
 		return next(new AppError('Invalid credentials', 401));
 	}
-	if (employee.role === 'admin') {
-		return next(new AppError('Not for admin login', 401));
-	}
 
 	createSendToken(employee, 200, req, res);
 });
 
-//Admin Login
-exports.loginAdmin = catchAsync(async (req, res, next) => {
-	const { email, password, employee_number } = req.body;
+// //Admin Login
+// exports.loginAdmin = catchAsync(async (req, res, next) => {
+// 	const { email, password, employee_number } = req.body;
 
-	if (email) {
-		if (!email || !password) {
-			return next(new AppError('Please provide email and password!', 400));
-		}
-		employee = await Employee.findOne({ email }).select('+password');
-	} else {
-		if (!employee_number || !password) {
-			return next(new AppError('Please provide the correct credentials'));
-		}
-		employee = await Employee.findOne({ employee_number }).select(
-			'+password',
-		);
-	}
-	// 2) Check if employee exists && password is correct
+// 	if (email) {
+// 		if (!email || !password) {
+// 			return next(new AppError('Please provide email and password!', 400));
+// 		}
+// 		employee = await Employee.findOne({ email }).select('+password');
+// 	} else {
+// 		if (!employee_number || !password) {
+// 			return next(new AppError('Please provide the correct credentials'));
+// 		}
+// 		employee = await Employee.findOne({ employee_number }).select(
+// 			'+password',
+// 		);
+// 	}
+// 	// 2) Check if employee exists && password is correct
 
-	if (!employee || !bcrypt.compareSync(password, employee.password)) {
-		return next(new AppError('Invalid credentials', 401));
-	}
-	if (employee.role === 'employee') {
-		return next(new AppError('Not for employee login', 401));
-	}
+// 	if (!employee || !bcrypt.compareSync(password, employee.password)) {
+// 		return next(new AppError('Invalid credentials', 401));
+// 	}
+// 	if (employee.role === 'employee') {
+// 		return next(new AppError('Not for employee login', 401));
+// 	}
 
-	// 3) If everything ok, send token to client
-	createSendToken(employee, 200, req, res);
-});
+// 	// 3) If everything ok, send token to client
+// 	createSendToken(employee, 200, req, res);
+// });
 
 //Token Check
 exports.protect = catchAsync(async (req, res, next) => {
