@@ -13,6 +13,7 @@ have different name so solve that issue on Sunday*/
 
 const multerStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
+		console.log(file);
 		// setting destination of uploading files
 		if (file.mimetype.startsWith('application')) {
 			// if uploading pdf/word
@@ -70,6 +71,7 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 	let val = [];
 	await Promise.all(
 		data.map((item) => {
+			console.log(req.files);
 			if (!req.files[item]) {
 				return;
 			}

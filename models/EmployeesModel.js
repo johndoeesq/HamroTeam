@@ -121,7 +121,7 @@ const EmployeesSchema = new mongoose.Schema(
 		},
 		citizenship: {
 			type: String,
-			required: [true, 'Citizenship of an employee is required'],
+			required: [true, 'Citizenship of an empl  oyee is required'],
 		},
 
 		photo: {
