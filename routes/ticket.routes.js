@@ -12,7 +12,10 @@ const router = express.Router();
 router
 	.route('/')
 	.get(
-		allqueryresults(Ticket),
+		allqueryresults(Ticket, {
+			path: 'employee',
+			select: 'employee_name',
+		}),
 		authController.protect,
 		authController.restrictTo('admin'),
 		ticketController.getAllTicket,
@@ -41,7 +44,7 @@ router
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo('admin', 'employee'),
+		authController.restrictTo('employee'),
 		checkEmployeeTicketAccess(Ticket),
 		ticketController.deleteTicket,
 	);
@@ -60,6 +63,15 @@ router
 		authController.protect,
 		authController.restrictTo('admin'),
 		ticketController.dismissTicket,
+	);
+
+//Route to display the tickets that belongs to an specific employees
+router
+	.route('/employee/:employeeID')
+	.get(
+		authController.protect,
+		authController.restrictTo('employee'),
+		ticketController.employeeTickets,
 	);
 
 module.exports = router;

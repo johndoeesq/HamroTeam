@@ -6,7 +6,17 @@ const factory = require('./handlerFactory');
 //@desc Create new Ticket
 //POST api/v1/ticket
 //Private
-exports.createTicket = factory.createOne(Ticket);
+exports.createTicket = catchAsync(async (req, res, next) => {
+	//Setting the employee value through the logged in employee
+	req.body.employee = req.employee.id;
+	const ticket = await Ticket.create(req.body);
+
+	res.status(201).json({
+		status: 'success',
+		results: ticket.length,
+		data: { ticket },
+	});
+});
 
 //@desc  get all Ticket
 //GET api/v1/ticket
@@ -90,6 +100,24 @@ exports.dismissTicket = catchAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
+		data: ticket,
+	});
+});
+
+//@desc Get all employees tickets
+//POST api/v1/tickets/employee/:employeeID
+//Private
+exports.employeeTickets = catchAsync(async (req, res, next) => {
+	const ticket = await Ticket.find({
+		employee: req.params.employeeID,
+	}).populate({
+		path: 'employee',
+		select: 'employee_name',
+	});
+
+	res.status(201).json({
+		status: 'success',
+		results: ticket.length,
 		data: ticket,
 	});
 });

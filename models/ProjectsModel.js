@@ -22,11 +22,9 @@ const ProjectsSchema = new mongoose.Schema(
 			required: [true, 'progress field is required'],
 		},
 		manager: {
-			type: String,
-			required: [true, 'manager field is required'],
-		},
-		feedback: {
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Employees',
+			required: [true, 'Project Manager must be assigned'],
 		},
 		team: [
 			{
@@ -44,6 +42,7 @@ const ProjectsSchema = new mongoose.Schema(
 		project_leader: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Employees',
+			required: [true, 'Project Leader must be assigned'],
 		},
 	},
 	{

@@ -20,14 +20,7 @@ const TicketSchema = new mongoose.Schema(
 			default: 'low',
 			required: [true, 'Urgency of the ticket must be defined'],
 		},
-		alloted_time: {
-			type: Date,
-			default: Date.now(),
-			required: [true, 'Urgency must have a time'],
-		},
-		leave_days: {
-			type: Number,
-		},
+
 		remarks: {
 			type: String,
 		},

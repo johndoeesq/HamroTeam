@@ -71,12 +71,15 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 		}
 		req.body.item = `${req.protocol}://${req.get(
 			'host',
-		)}/files/${`document_${Date.now()}-${req.files[item][0].originalname}`}`;
+		)}/public/files/${`document_${Date.now()}-${
+			req.files[item][0].originalname
+		}`}`;
 
 		val.push([item, req.body.item]);
 	});
 
 	result = Object.fromEntries(val);
+	console.log(result);
 
 	next();
 });
