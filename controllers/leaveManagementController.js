@@ -101,3 +101,26 @@ exports.approveStatus = catchAsync(async (req, res, next) => {
 });
 
 exports.leaveFeedback = factory.updateOne(LeaveManagement);
+
+//@desc Get all employees leaves
+//POST api/v1/leaves/employee/:employeeID
+//Private
+exports.employeeLeaves = catchAsync(async (req, res, next) => {
+	const leaves = await LeaveManagement.find({
+		employee: req.params.employeeID,
+	}).populate({
+		path: 'employee',
+		select: 'employee_name',
+	});
+	if (!leaves) {
+		return next(
+			new AppError('Sorry! You dont have any documents to display!', 400),
+		);
+	}
+
+	res.status(201).json({
+		status: 'success',
+		results: leaves.length,
+		data: leaves,
+	});
+});
