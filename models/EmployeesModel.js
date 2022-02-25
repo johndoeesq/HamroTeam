@@ -50,40 +50,14 @@ const EmployeesSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["admin", "employee"],
+      enum: ["admin", "employee", "HR"],
       required: [true, "Role must be assigned"],
+      default: "employee",
     },
     type: {
       type: String,
       enum: ["freelancing", "intern", "fulltime"],
       required: [true, "An employee must have a type"],
-    },
-    // employee_data: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "EmployeeData",
-    //   unique: true,
-    //   required: [true, "Employee must have data"],
-    // },
-    payroll: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Payroll",
-      required: [true, "Employee must have payroll"],
-    },
-    emergency_contact: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "EmergencyContact",
-      unique: true,
-      required: [true, "Employee must have emergency contacts"],
-    },
-    documents: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Documents",
-      unique: true,
-      required: [true, "Employee must have their"],
-    },
-    photo: {
-      type: String,
-      required: [true, "An employee must have a photo"],
     },
 
     remaining_leave_days: {
@@ -105,7 +79,7 @@ const EmployeesSchema = new mongoose.Schema(
     phone: {
       type: Number,
       required: [true, "An employee must have a phone number"],
-      unique: true,
+      unique: [true, " A phone number must be unique"],
     },
 
     blood_group: {
@@ -116,15 +90,52 @@ const EmployeesSchema = new mongoose.Schema(
       type: String,
       required: [true, "An employee must have a gender"],
     },
-    passport: {
-      type: Number,
-    },
+
     annual_leave: {
       type: Number,
     },
     sick_leave: {
       type: Number,
     },
+
+    contact_name: {
+      type: String,
+      required: [true, "Emergency contact must have a name"],
+    },
+    contact_number: {
+      type: Number,
+      required: [true, "Emergency contact must have a contact number"],
+    },
+    contact_relation: {
+      type: String,
+      required: [true, "Relation to emergency contact must be mentioned"],
+    },
+    contact_address: {
+      type: String,
+      required: [true, "Emergency contact address must be given"],
+    },
+
+    resume: {
+      type: String,
+      required: [true, "Resume of an employee is required"],
+    },
+    citizenship: {
+      type: String,
+      required: [true, "Citizenship of an employee is required"],
+    },
+
+    photo: {
+      type: String,
+      required: [true, "Photo of an employee is required"],
+    },
+
+    offerletter: {
+      type: String,
+    },
+    contract: {
+      type: String,
+    },
+
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -184,8 +195,6 @@ EmployeesSchema.methods.createPasswordResetToken = function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-
-  // console.log({ resetToken }, this.passwordResetToken);
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 

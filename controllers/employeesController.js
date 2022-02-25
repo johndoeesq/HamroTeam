@@ -3,23 +3,39 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const factory = require("./handlerFactory");
 const multer = require("multer");
-const sharp = require("sharp");
-const Documents = require("../models/DocumentsModel");
-// const EmployeeData = require('../models/EmployeeDataModel');
-const Payroll = require("../models/PayrollModel");
-const EmergencyContact = require("../models/EmergencyContactModel");
 
 //@desc Create new Employee Data
 //POST api/v1/employeedata
 //Private
 
-const multerStorage = multer.memoryStorage();
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // setting destination of uploading files
+    if (file.mimetype.startsWith("application")) {
+      // if uploading pdf/word
+      cb(null, "public/files/");
+    } else {
+      // else uploading image
+      cb(null, "public/photos/");
+    }
+  },
+  filename: (req, file, cb) => {
+    // naming file
+    cb(null, file.fieldname + "-" + file.originalname);
+  },
+});
 
 const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
+  if (file.mimetype.startsWith("application")) {
+    // check file type to be pdf, doc, or docx
+    cb(null, true);
+  }
+  // else uploading image
+  else if (file.mimetype.startsWith("image")) {
+    // check file type to be an image
     cb(null, true);
   } else {
-    cb(new AppError("Not an image! Please upload only images.", 400), false);
+    cb(null, false); // else fails
   }
 };
 
@@ -28,48 +44,61 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadEmployeePhoto = upload.single("photo");
+exports.uploadFile = upload.fields([
+  { name: "resume", maxCount: 1 },
+  { name: "citizenship", maxCount: 1 },
+  { name: "PAN", maxCount: 1 },
+  { name: "photo", maxCount: 1 },
+  { name: "offerletter", maxCount: 1 },
+  { name: "contract", maxCount: 1 },
+]);
 
-exports.resizeEmployeePhoto = catchAsync(async (req, res, next) => {
-  if (!req.file) return next();
+exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
+  if (!req.files) return next(new AppError("No file selected"));
 
-  req.file.filename = `employee-${Date.now()}.jpeg`;
+  let data = [
+    "resume",
+    "citizenship",
+    "PAN",
+    "photo",
+    "offerletter",
+    "contract",
+  ];
+  let val = [];
+  await Promise.all(
+    data.map((item) => {
+      if (!req.files[item]) {
+        return;
+      }
 
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`public/employee/${req.file.filename}`);
+      filename = req.files[item][0].filename.replace(" ", "-");
 
-  req.body.photo = `${req.protocol}://${req.get("host")}/employee/${
-    req.file.filename
-  }`;
+      if (req.files[item][0].mimetype.startsWith("application")) {
+        req.body.item = `${req.protocol}://${req.get(
+          "host"
+        )}/files/${filename}`;
+      } else {
+        req.body.item = `${req.protocol}://${req.get(
+          "host"
+        )}/photos/${filename}`;
+      }
+
+      val.push([item, req.body.item]);
+    })
+  );
+
+  result = Object.fromEntries(val);
 
   next();
 });
 
 exports.createEmployees = catchAsync(async (req, res, next) => {
-  // const employeeData = await EmployeeData.findById(req.body.employee_data);
-  // if (!employeeData) {
-  // 	return next(new AppError('No employeeData found with that id', 404));
-  // }
-  const documents = await Documents.findById(req.body.documents);
-  if (!documents) {
-    return next(new AppError("No documents found with that id", 404));
-  }
-  const payroll = await Payroll.findById(req.body.payroll);
-  if (!payroll) {
-    return next(new AppError("No payroll found with that id", 404));
-  }
-
-  const emergencyContact = await EmergencyContact.findById(
-    req.body.emergency_contact
-  );
-  if (!emergencyContact) {
-    return next(new AppError("No emergencyContact found with that id", 404));
-  }
-
-  const employee = await Employees.create(req.body);
+  let data = {
+    ...req.body,
+    ...result,
+  };
+  console.log(data);
+  const employee = await Employees.create(data);
   res.status(200).json({
     status: "success",
     data: employee,
@@ -96,4 +125,23 @@ exports.deleteemployee = factory.deleteOne(Employees);
 //@desc Update Single Employee
 //PUT api/v1/employeedata/:id
 //Private
-exports.updateemployee = factory.updateOne(Employees);
+exports.updateemployee = catchAsync(async (req, res, next) => {
+  let employee = await Employees.findById(req.params.id);
+  if (!employee) {
+    return next(new AppError("No document found with that ID", 404));
+  }
+
+  let data = {
+    ...req.body,
+    ...result,
+  };
+
+  employee = await Employees.findByIdAndUpdate(req.params.id, data, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "success",
+    data: employee,
+  });
+});
