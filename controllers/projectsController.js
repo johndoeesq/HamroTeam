@@ -90,3 +90,34 @@ exports.updateProjectAnotherStatus = catchAsync(async (req, res, next) => {
 		message: 'Successfully updated the status',
 	});
 });
+
+//@desc Get specific projects
+//PUT api/v1/projects/employee/:employeeID
+//Private
+exports.getSpecificProjects = catchAsync(async (req, res, next) => {
+	let projects = await Projects.find(req.params.id);
+
+	if (!projects) {
+		return next(new AppError('No project found with that ID', 404));
+	}
+
+	if (projects.project_status == 'Upcoming') {
+		project_status = {
+			project_status: 'Ongoing',
+		};
+		projects = await Projects.findByIdAndUpdate(
+			req.params.id,
+			project_status,
+			{
+				new: true,
+				runValidators: true,
+			},
+		);
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: projects,
+		message: 'Successfully updated the status',
+	});
+});

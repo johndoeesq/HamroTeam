@@ -13,7 +13,6 @@ have different name so solve that issue on Sunday*/
 
 const multerStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		console.log(file);
 		// setting destination of uploading files
 		if (file.mimetype.startsWith('application')) {
 			// if uploading pdf/word
@@ -25,7 +24,7 @@ const multerStorage = multer.diskStorage({
 	},
 	filename: (req, file, cb) => {
 		// naming file
-		cb(null, `document_${Date.now()}-${file.originalname}`);
+		cb(null, file.fieldname + '-' + file.originalname);
 	},
 });
 
@@ -71,20 +70,20 @@ exports.resizeDocumentsPhoto = catchAsync(async (req, res, next) => {
 	let val = [];
 	await Promise.all(
 		data.map((item) => {
-			console.log(req.files);
 			if (!req.files[item]) {
 				return;
 			}
-			filename = req.files[item][0].originalname;
+
+			filename = req.files[item][0].filename.replace(' ', '-');
 
 			if (req.files[item][0].mimetype.startsWith('application')) {
 				req.body.item = `${req.protocol}://${req.get(
 					'host',
-				)}/files/${`document_${Date.now()}-${filename}`}`;
+				)}/files/${filename}`;
 			} else {
 				req.body.item = `${req.protocol}://${req.get(
 					'host',
-				)}/photos/${`document_${Date.now()}-${filename}`}`;
+				)}/photos/${filename}`;
 			}
 
 			val.push([item, req.body.item]);
@@ -101,7 +100,7 @@ exports.createEmployees = catchAsync(async (req, res, next) => {
 		...req.body,
 		...result,
 	};
-
+	console.log(data);
 	const employee = await Employees.create(data);
 	res.status(200).json({
 		status: 'success',
@@ -132,8 +131,9 @@ exports.deleteemployee = factory.deleteOne(Employees);
 exports.updateemployee = catchAsync(async (req, res, next) => {
 	let employee = await Employees.findById(req.params.id);
 	if (!employee) {
-		return next(new AppError('No document found with that Id', 404));
+		return next(new AppError('No document found with that ID', 404));
 	}
+
 	let data = {
 		...req.body,
 		...result,
