@@ -49,11 +49,6 @@ exports.handleTicket = catchAsync(async (req, res, next) => {
 		return next(new AppError('No Ticket found with that ID', 404));
 	}
 
-	// if (ticket.handled == false) {
-	//   handled = {
-	//     handled: true,
-	//   };
-	// }
 	ticket = await Ticket.findByIdAndUpdate(
 		req.params.id,
 		{
